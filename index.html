@@ -1,1 +1,29 @@
-hello github
+<!DOCTYPE html>
+<html>
+<head>
+<title>2byte resume</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="favicon.ico" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+</head>
+<style>
+*{margin:0;padding:0}
+
+</style>
+<body>
+
+<iframe frameborder="0" id="mainFrame" src="http://frank.deercv.com/" width="100%" height="120">
+<script type="text/javascript" language="javascript">     
+ var iframe = document.getElementById("mainFrame");
+var iframeHeight = function() {    
+    var hash = window.location.hash.slice(1), h;
+    if (hash && /height=/.test(hash)) {
+        h = hash.replace("height=", "");
+        iframe.height = h;
+    }
+    setTimeout(iframeHeight, 200);
+};
+iframeHeight();
+</script>  
+</body>
+</html>
