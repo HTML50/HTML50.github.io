@@ -1,0 +1,73 @@
+@font-face {
+    font-family: "Cutive";
+    src: url("../css/Cutive.woff2") format('woff2');
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	border:none;
+	transition:all .25s;
+}
+
+html,body {
+	width: 100%;
+	height: 100%;
+	font: 22px "Microsoft YaHei","Courier New";
+	/*62.5% 如果用户修改过浏览器默认字体大小，是不是就不起作用了呢*/
+	color: #000;
+}
+
+a{
+text-decoration:none;
+color:#fff;
+}
+
+a:hover{
+	text-shadow:1px 1px 10px #000;
+}
+
+.avatar {
+	width:240px;
+	margin-top:60px;
+	background:#fff;
+	border-radius: 120px;
+	box-shadow:3px 3px 20px 5px rgba(0,0,0,.3);
+}
+
+.container{
+	margin: 0 auto;
+	width:80%;	
+}
+
+.arrow-svg {
+	max-height: 83px;
+	display: block;
+	margin: 0 auto;
+	max-width: 100%;
+	position: relative;
+	top: -1px;
+	fill: #8f3a3a;
+}
+
+.divider {
+	height:5px;
+	background:#eeedf0;
+	width:60%;
+	margin:10px auto;
+}
+
+
+
+
+.header {
+	height:100%;
+	width:100%;
+	margin:auto;
+	background:#8f3a3a;
+	text-align:center;
+	line-height:2;
+	text-shadow:1px 1px 5px #000;
+	color:#fff;
+}
+
