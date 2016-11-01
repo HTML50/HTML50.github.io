@@ -104,12 +104,67 @@ a:hover{
 
 /*article*/
 #list {
-	margin-bottom:10%;
-}
-#list p{
-	font-size:1em;
+	margin-bottom: 10%;
+    line-height: 2;
+    width: 70%;
+    margin: auto;
+	text-indent:2em;
 }
 
+#list h1, h2, h3,strong,code,pre {
+    text-align: center;
+	margin-bottom: 1.2em;
+	text-indent:0;
+}
+
+#list h1{
+	font-size: 2em;
+}
+
+
+#list code, pre {
+    font-family: Consolas, Menlo, Monaco, monospace, serif;
+    font-size: 0.9em;
+    background: white;
+}
+
+#list code{
+    border: 1px solid rgb(221, 221, 221);
+    padding-bottom: 8px;
+    padding-top: 6px;
+	margin-left:5px;
+	margin-right:5px;
+}
+
+#list pre{
+	margin-left: 1em;
+    padding-left: 1em;
+    border: 1px solid rgb(221, 221, 221);
+    padding-bottom: 8px;
+    padding-top: 6px;
+    margin-bottom: 1.5em;
+    display: block;
+    break-inside: avoid;
+    text-align: left;
+    overflow: visible;
+    white-space: pre-wrap;
+    position: relative !important;
+    background: inherit;
+}
+
+#list h2::after {
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(47, 47, 47);
+    content: "";
+    width: 100px;
+    display: block;
+    margin: 0px auto;
+    height: 1px;
+}
+#list ol{
+	list-style-position: inside;
+}
 
 /*footer*/
 
