@@ -12,8 +12,10 @@ if (!httpRequest) {
 httpRequest.onreadystatechange = alertContents;
 httpRequest.open('GET', url);
 httpRequest.send();
+
+if(url != location.pathname){
 history.pushState(null, null, url);
-console.log('pushState: ',url)
+}
 }
 
 function alertContents() {
@@ -28,7 +30,6 @@ if (httpRequest.readyState === XMLHttpRequest.DONE) {
 
 window.onpopstate = function(event) {
 	makeRequest(location.pathname);
-	console.log('history: ',location.pathname)
 };
 
 }

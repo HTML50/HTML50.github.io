@@ -71,6 +71,10 @@ a:hover{
 	color:#fff;
 }
 
+.header a{
+	color:#fff;
+}
+
 /*list*/
 
 
@@ -99,6 +103,9 @@ a:hover{
 }
 
 /*article*/
+#list {
+	margin-bottom:10%;
+}
 #list p{
 	font-size:1em;
 }
