@@ -20,7 +20,6 @@ html,body {
 
 a{
 text-decoration:none;
-color:#fff;
 }
 
 a:hover{
@@ -29,7 +28,7 @@ a:hover{
 
 .avatar {
 	width:240px;
-	margin-top:60px;
+	margin-top:10%;
 	background:#fff;
 	border-radius: 120px;
 	box-shadow:3px 3px 20px 5px rgba(0,0,0,.3);
@@ -48,6 +47,7 @@ a:hover{
 	position: relative;
 	top: -1px;
 	fill: #8f3a3a;
+	margin-bottom:10%;
 }
 
 .divider {
@@ -70,4 +70,49 @@ a:hover{
 	text-shadow:1px 1px 5px #000;
 	color:#fff;
 }
+
+/*list*/
+
+
+.item {
+	display:flex;
+	justify-content: center;
+}
+
+.item-img img{
+	width:200px;
+}
+
+.item-title{
+	font-size:1.5em;
+}
+
+.item-date{
+	font-size:0.8em;
+}
+
+.right-box {
+	padding:20px;
+	display:flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+/*article*/
+#list p{
+	font-size:1em;
+}
+
+
+/*footer*/
+
+.footer{
+	text-align:center;
+}
+
+
+
+
+
+
 
