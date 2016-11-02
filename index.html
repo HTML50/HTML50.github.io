@@ -8,6 +8,21 @@
 <link rel="stylesheet" href="css/css.css"/>
 </head>
 <body>
+
+<div id='nav' class='fixed-nav'>
+<a href='javascript:smoothMove(0)'><img src='img/top.png'></a>
+<a href='javascript:history.back()'><img src='img/back.png'></a>
+<a href='javascript:makeRequest("/list.html")'><img src='img/home.png'></a>
+</div>
+
+
+
+<div  id='spinner' class="sk-chasing-dots">
+        <div class="sk-child sk-dot1"></div>
+        <div class="sk-child sk-dot2"></div>
+      </div>
+
+
 <section class="header">
 <img class="avatar" src='img/me.png'>
 <h1>2byte的博客</h1>
@@ -18,26 +33,27 @@
 	<a href='javascript:makeRequest("/list.html");' class='active'>首页</a>
 	<a href='javascript:makeRequest("/category.html")'>分类</a>
 	<a href='javascript:makeRequest("/guestbook.html")'>留言</a>
+	<a href='javascript:makeRequest("/pm.html")'>私信</a>
 </div>
 </section>
-<svg class="arrow-svg" xmlns="http://www.w3.org/2000/svg" viewbox="-176 240.4 605.2 81.6">
+<svg class="arrow-header" xmlns="http://www.w3.org/2000/svg" viewbox="-176 240.4 605.2 81.6">
 <path class="portfolio-arrow" d="M429.2 240.4C251 247.8 141.3 289.9 127.3 322c-14-32.2-89.1-74.2-303.3-81.6h605.2z"></path>
 </svg>
 
-
 <section id='list'></section>
-
 <section class='footer'>
-
-
+<svg class="arrow-footer" xmlns="http://www.w3.org/2000/svg" viewbox="-176 240.4 605.2 81.6">
+<path class="portfolio-arrow" d="M429.2 240.4C251 247.8 141.3 289.9 127.3 322c-14-32.2-89.1-74.2-303.3-81.6h605.2z"></path>
+</svg>
+(｡･∀･)ﾉﾞ嗨~<br>
+Created and designed by 2Byte<br>
+欢迎吐槽、交流(づ￣3￣)づ╭❤～<br>
+<a href='https://github.com/html50' target='_blank' title='给他哈不'><img src='img/github.png'></a>
+<a href='http://blog.csdn.net/twobyte' target='_blank' title='CSDN博客'><img src='img/csdn.png'></a>
+<a href='https://www.twitter.com/0002kb' target='_blank' title='推特'><img src='img/twitter.png'></a>
+<a href='https://weibo.com/sooob' target='_blank' title='微博'><img src='img/weibo.png'></a>
 </section>
-
-<div class='fixed-nav'>
-<a href='javascript:moveTop()'><img src='img/top.png'></a>
-<a href='javascript:moveTop()'><img src='img/back.png'></a>
-<a href='javascript:moveTop()'><img src='img/home.png'></a>
-</div>
-
+<script src='js/pace.min.js'></script>
 <script src='js/main.js'></script>
 </body>
 </html>

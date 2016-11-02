@@ -3,13 +3,13 @@ makeRequest('list.html')
 
 function makeRequest(url,boolean) {
 httpRequest = new XMLHttpRequest();
-
+Pace.restart();
 if (!httpRequest) {
   console.log('Giving up :( Cannot create an XMLHTTP instance');
   return false;
 }
-
-document.getElementById('list').classList.add ('animation','fadeOut');
+document.getElementById('spinner').style.display='block';
+document.getElementById('list').classList.add ('animation','fadeOutDown');
 httpRequest.onreadystatechange = alertContents;
 
 setTimeout(function(){
@@ -29,10 +29,13 @@ setTimeout(function(){
 function alertContents() {
 if (httpRequest.readyState === XMLHttpRequest.DONE) {
   if (httpRequest.status === 200) {
+	  Pace.on('done', function() {
 	document.getElementById('list').innerHTML = httpRequest.responseText;
-	document.getElementById('list').classList.remove ('fadeOut');
+	document.getElementById('list').classList.remove ('fadeOutDown');
 	document.getElementById('list').classList.add ('fadeInUp');
-	smoothMove()
+	document.getElementById('spinner').style.display='none';
+	})
+	smoothMove(520);
   } else {
 	alert('There was a problem with the request.');
   }
@@ -40,35 +43,47 @@ if (httpRequest.readyState === XMLHttpRequest.DONE) {
 
 
 window.onpopstate = function(event) {
-	makeRequest(location.pathname);
+	if(location.pathname == '/'){
+		makeRequest('list.html');	
+	}
+	else{
+		makeRequest(location.pathname);	
+	}
+	
 };
 
 document.addEventListener("mousewheel", MouseWheelHandler, false);
 // Firefox
 document.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
 function MouseWheelHandler(e) {
-
 	clearInterval(id)
-
 	return false;
 }
+
+document.addEventListener("scroll", function(){
+	if(window.pageYOffset > 800){
+		if(document.getElementById('nav').style.opacity==0) document.getElementById('nav').style.opacity=1;
+	}
+	else{
+		if(document.getElementById('nav').style.opacity==1) document.getElementById('nav').style.opacity=0;
+	}
+});
 }
 
 
 
-function smoothMove(){
-	var height = window.pageYOffset;
-	
-	if(height < 520){
+function smoothMove(y){
+	var	height = window.pageYOffset;
+	if(height < y){
 	id = setInterval(function(){
 		window.scrollTo(0, height);
-		if(height <440){
-		height+=15;
+		if(height<y-110){
+		height+=100;
 		}
-		else if(height<490){
+		else if(height<y-20){
 			height+=3;
 		}
-		else if(height<520){
+		else if(height<y){
 			height+=1;
 		}
 		else{
@@ -79,13 +94,13 @@ function smoothMove(){
 	else {
 		id = setInterval(function(){
 		window.scrollTo(0, height);
-		if(height > 600){
-		height-=15;
+		if(height > y+110){
+		height-=100;
 		}
-		else if(height>550){
+		else if(height>y+20){
 			height-=3;
 		}
-		else if(height>=521){
+		else if(height>y){
 			height-=1;
 		}
 		else{
