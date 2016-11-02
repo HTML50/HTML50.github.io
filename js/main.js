@@ -1,7 +1,7 @@
-var httpRequest;
+var httpRequest,id;
 makeRequest('list.html')
 
-function makeRequest(url) {
+function makeRequest(url,boolean) {
 httpRequest = new XMLHttpRequest();
 
 if (!httpRequest) {
@@ -9,20 +9,30 @@ if (!httpRequest) {
   return false;
 }
 
+document.getElementById('list').classList.add ('animation','fadeOut');
 httpRequest.onreadystatechange = alertContents;
-httpRequest.open('GET', url);
-httpRequest.send();
 
-if(url != location.pathname){
-history.pushState(null, null, url);
-}
+setTimeout(function(){
+	httpRequest.open('GET', url);
+	httpRequest.send();
+	//pushState will change the broswer's file path. 
+	//if do this before ajax get. You will get wrong
+	//eg. request: blog/index.html
+	//you get: blog/blog/index.html
+	if(url != location.pathname){
+	history.pushState(null, null, url);
+	}
+},250)
+
 }
 
 function alertContents() {
 if (httpRequest.readyState === XMLHttpRequest.DONE) {
   if (httpRequest.status === 200) {
 	document.getElementById('list').innerHTML = httpRequest.responseText;
-	 smoothMove()
+	document.getElementById('list').classList.remove ('fadeOut');
+	document.getElementById('list').classList.add ('fadeInUp');
+	smoothMove()
   } else {
 	alert('There was a problem with the request.');
   }
@@ -33,10 +43,21 @@ window.onpopstate = function(event) {
 	makeRequest(location.pathname);
 };
 
+document.addEventListener("mousewheel", MouseWheelHandler, false);
+// Firefox
+document.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
+function MouseWheelHandler(e) {
+
+	clearInterval(id)
+
+	return false;
+}
 }
 
+
+
 function smoothMove(){
-	var height = window.pageYOffset,id;
+	var height = window.pageYOffset;
 	
 	if(height < 520){
 	id = setInterval(function(){
@@ -73,3 +94,5 @@ function smoothMove(){
 	},16)
 	}
 }
+
+

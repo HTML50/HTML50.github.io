@@ -14,7 +14,6 @@ html,body {
 	width: 100%;
 	height: 100%;
 	font: 22px "Microsoft YaHei","Courier New";
-	/*62.5% 如果用户修改过浏览器默认字体大小，是不是就不起作用了呢*/
 	color: #000;
 }
 
@@ -25,6 +24,30 @@ text-decoration:none;
 a:hover{
 	text-shadow:1px 1px 10px #000;
 }
+
+
+/*fixed*/
+.fixed-nav {
+	position:fixed;
+	bottom:5%;
+	right:5%;
+}
+.fixed-nav img{
+	height:30px;
+}
+.fixed-nav a{
+	display:block;
+	border-radius: 60px;
+    height: 48px;
+    background: #ccc;
+    text-shadow: 2px 1px 5px #000;
+    padding: 20px;
+}
+
+
+
+
+/*header*/
 
 .avatar {
 	width:240px;
@@ -186,4 +209,61 @@ a:hover{
 }
 .guestbook{
    text-indent:0;
+}
+
+/*page section animation*/
+
+
+.animation {
+    animation-duration: 0.25s;
+    transition-timing-function: ease-in;
+    animation-fill-mode: both;
+  }
+
+.fadeInUp {
+    animation-name: fadeInUp;
+  }
+
+.fadeInRight {
+    animation-name: fadeInRight;
+  }
+  
+  .fadeOut {
+    animation-name: fadeOut;
+  }
+  
+  
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
