@@ -23,7 +23,6 @@ setTimeout(function(){
 	history.pushState(null, null, url);
 	}
 },250)
-
 }
 
 function alertContents() {
@@ -40,16 +39,18 @@ if (httpRequest.readyState === XMLHttpRequest.DONE) {
 	alert('There was a problem with the request.');
   }
 }
+}
+
 
 
 window.onpopstate = function(event) {
+	console.log(location.pathname)
 	if(location.pathname == '/'){
 		makeRequest('list.html');	
 	}
 	else{
 		makeRequest(location.pathname);	
 	}
-	
 };
 
 document.addEventListener("mousewheel", MouseWheelHandler, false);
@@ -68,8 +69,6 @@ document.addEventListener("scroll", function(){
 		if(document.getElementById('nav').style.opacity==1) document.getElementById('nav').style.opacity=0;
 	}
 });
-}
-
 
 
 function smoothMove(y){
@@ -111,3 +110,7 @@ function smoothMove(y){
 }
 
 
+if ('scrollRestoration' in history) {
+  // Back off, browser, I got this...
+  history.scrollRestoration = 'manual';
+}

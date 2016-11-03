@@ -32,6 +32,15 @@ a:hover{
 	text-shadow:1px 1px 10px #000;
 }
 
+.ab-center{
+	position:absolute;
+	top:0;left:0;bottom:0;right:0;
+	margin:auto;
+}
+
+
+
+
 /*fixed*/
 .fixed-nav {
 	position:fixed;
@@ -68,6 +77,8 @@ a:hover{
 }
 
 
+/* loader */
+
 #spinner {
 	display:none;
 	position:fixed;
@@ -100,9 +111,40 @@ a:hover{
 
 /*header*/
 
+.header {
+	height:100%;
+	width:100%;
+	margin:auto;
+	background:#36af6d;
+	text-align:center;
+	line-height:2;
+	text-shadow:1px 1px 5px #000;
+	color:#fff;
+}
+
+
+.header a{
+	color:#fff;
+}
+
+.header-box {
+	height:500px;
+}
+
+.arrow-header {
+	max-height: 83px;
+	display: block;
+	margin: 0 auto;
+	max-width: 100%;
+	position: relative;
+	top: -1px;
+	fill: #36af6d;
+	margin-bottom:5%;
+	z-index: -1;
+}
+
 .avatar {
 	width:240px;
-	margin-top:10%;
 	background:#fff;
 	border-radius: 120px;
 	box-shadow:3px 3px 20px 5px rgba(0,0,0,.3);
@@ -122,33 +164,10 @@ a:hover{
 	margin:10px auto;
 }
 
-
-.arrow-header {
-	max-height: 83px;
-	display: block;
-	margin: 0 auto;
-	max-width: 100%;
-	position: relative;
-	top: -1px;
-	fill: #36af6d;
-	margin-bottom:5%;
+.navigation {
+	margin:40px auto;
 }
 
-.header {
-	height:100%;
-	width:100%;
-	margin:auto;
-	background:#36af6d;
-	text-align:center;
-	line-height:2;
-	text-shadow:1px 1px 5px #000;
-	color:#fff;
-}
-
-
-.header a{
-	color:#fff;
-}
 
 /*list*/
 
