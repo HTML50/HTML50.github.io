@@ -1,13 +1,16 @@
 var httpRequest,id;
 makeRequest('list.html')
+FSS("header", "dynamic-background");
+
+
 
 function makeRequest(url,boolean) {
 httpRequest = new XMLHttpRequest();
-Pace.restart();
 if (!httpRequest) {
-  console.log('Giving up :( Cannot create an XMLHTTP instance');
+  console.debug('Giving up :( Cannot create an XMLHTTP instance');
   return false;
 }
+Pace.restart();
 document.getElementById('spinner').style.display='block';
 document.getElementById('list').classList.add ('animation','fadeOutDown');
 httpRequest.onreadystatechange = alertContents;
@@ -28,7 +31,7 @@ setTimeout(function(){
 function alertContents() {
 if (httpRequest.readyState === XMLHttpRequest.DONE) {
   if (httpRequest.status === 200) {
-	  Pace.on('done', function() {
+	Pace.on('done', function() {
 	document.getElementById('list').innerHTML = httpRequest.responseText;
 	document.getElementById('list').classList.remove ('fadeOutDown');
 	document.getElementById('list').classList.add ('fadeInUp');
@@ -36,7 +39,7 @@ if (httpRequest.readyState === XMLHttpRequest.DONE) {
 	})
 	smoothMove(520);
   } else {
-	alert('There was a problem with the request.');
+	console.debug('There was a problem with the request.');
   }
 }
 }
@@ -44,7 +47,6 @@ if (httpRequest.readyState === XMLHttpRequest.DONE) {
 
 
 window.onpopstate = function(event) {
-	console.log(location.pathname)
 	if(location.pathname == '/'){
 		makeRequest('list.html');	
 	}
