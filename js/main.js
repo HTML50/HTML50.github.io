@@ -1,15 +1,15 @@
-var httpRequest,id;
-makeRequest('list.html')
+var httpRequest,id,isFirst,first=true;
+makeRequest('list.html','first')
 FSS("header", "dynamic-background");
 
-
-
-function makeRequest(url,boolean) {
+function makeRequest(url,isFirst) {
 httpRequest = new XMLHttpRequest();
 if (!httpRequest) {
   console.debug('Giving up :( Cannot create an XMLHTTP instance');
   return false;
 }
+if(isFirst != 'first'){first=false;}
+
 Pace.restart();
 document.getElementById('spinner').style.display='block';
 document.getElementById('list').classList.add ('animation','fadeOutDown');
@@ -37,7 +37,8 @@ if (httpRequest.readyState === XMLHttpRequest.DONE) {
 	document.getElementById('list').classList.add ('fadeInUp');
 	document.getElementById('spinner').style.display='none';
 	})
-	smoothMove(520);
+	console.log(isFirst)
+	if(first != true){smoothMove(520);first=false;}
   } else {
 	console.debug('There was a problem with the request.');
   }
