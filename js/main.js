@@ -1,20 +1,31 @@
-var httpRequest,id,isFirst,first=true;
-makeRequest('list.html','first')
-FSS("header", "dynamic-background");
+var httpRequest,id,flag=0;
+//flag:
+//0: first time on site
+//1: open blog page
+//2: normal visit
 
-function makeRequest(url,isFirst) {
+
+makeRequest('list.html')
+//open index.html and load list.html, with flag=0, means no auto scroll roll
+
+FSS("header", "dynamic-background");
+//generate the header animation
+
+function makeRequest(url,num) {
 httpRequest = new XMLHttpRequest();
 if (!httpRequest) {
   console.debug('Giving up :( Cannot create an XMLHTTP instance');
   return false;
 }
-if(isFirst != 'first'){first=false;}
 
-Pace.restart();
+//blog flag
+if(num == 1){flag=1;}
+
 document.getElementById('spinner').style.display='block';
 document.getElementById('list').classList.add ('animation','fadeOutDown');
 httpRequest.onreadystatechange = alertContents;
 
+//for transition animation
 setTimeout(function(){
 	httpRequest.open('GET', url);
 	httpRequest.send();
@@ -31,20 +42,24 @@ setTimeout(function(){
 function alertContents() {
 if (httpRequest.readyState === XMLHttpRequest.DONE) {
   if (httpRequest.status === 200) {
-	Pace.on('done', function() {
-	document.getElementById('list').innerHTML = httpRequest.responseText;
+	var ajaxSource = httpRequest.responseText;
+	
+		if(flag==1){
+			ajaxSource = ajaxSource.replace(/<!doctype html>[\s\S|\.]*<body>/, '');
+			flag=null;
+		}
+		
+	document.getElementById('list').innerHTML = ajaxSource;
 	document.getElementById('list').classList.remove ('fadeOutDown');
 	document.getElementById('list').classList.add ('fadeInUp');
 	document.getElementById('spinner').style.display='none';
-	})
-	console.log(isFirst)
-	if(first != true){smoothMove(520);first=false;}
+	if(flag == 0){flag=null;}
+	else{smoothMove(520);}
   } else {
 	console.debug('There was a problem with the request.');
   }
 }
 }
-
 
 
 window.onpopstate = function(event) {
@@ -72,6 +87,14 @@ document.addEventListener("scroll", function(){
 		if(document.getElementById('nav').style.opacity==1) document.getElementById('nav').style.opacity=0;
 	}
 });
+
+window.addEventListener("keydown", function(e){
+	if(e.keyCode == 0x74){
+		e.preventDefault();
+		makeRequest(location.href);
+	}
+});
+
 
 
 function smoothMove(y){

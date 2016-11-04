@@ -416,7 +416,7 @@ function FSS(container, output){
 	FSS.Plane.prototype = Object.create(FSS.Geometry.prototype);
 	FSS.Material = function(b, d) {
 		this.ambient = new FSS.Color(b || "#444444");
-		this.diffuse = new FSS.Color(d || "#FFFFFF");
+		this.diffuse = new FSS.Color(d || "#fff");
 		this.slave = new FSS.Color
 	};
 	FSS.Mesh = function(b, d) {
@@ -862,7 +862,7 @@ function FSS(container, output){
 			ambient: "#010101",
 			diffuse: "#ffffff",
 			speed: 6E-4,
-			opacity: 0.5
+			opacity: 0.3
 		},
 		n = {
 			count: 2,
@@ -871,9 +871,9 @@ function FSS(container, output){
 			ambient: "#ffffff",
 			diffuse: "#2d2d2d",
 			speed: 0.001,
-			gravity: 800,
+			gravity: 300,
 			dampening: 0.95,
-			minLimit: 20,
+			minLimit: 10,
 			maxLimit: null,
 			minDistance: 20,
 			maxDistance: 400,
@@ -891,8 +891,8 @@ function FSS(container, output){
 		u = Date.now(),
 		E = FSS.Vector3.create(),
 		y = FSS.Vector3.create(),
-		z = document.getElementById(container || "container");
-		var X = document.getElementById(output || "output");
+		z = document.getElementById(container);
+		var X = document.getElementById(output);
 		var D,
 		B,
 		G,
@@ -952,7 +952,7 @@ function FSS(container, output){
 		function(b) {
 			FSS.Vector3.set(y, b.x, D.height - b.y);
 			FSS.Vector3.subtract(y, E);
-			n.autopilot = !n.autopilot; (void 0).updateDisplay()
+			n.autopilot = !n.autopilot; 
 		});
 		z.addEventListener("mousemove",
 		function(b) {

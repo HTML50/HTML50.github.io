@@ -160,8 +160,6 @@ a:hover{
 .navigation {
 	margin:50px auto;
 }
-
-
 /*list*/
 
 
@@ -212,7 +210,19 @@ a:hover{
 #list h1{
 	font-size: 2em;
 }
+#list h1:nth-child(1){
+	font-size: 2.5em;
+    width: 80%;
+    margin: auto;
+}
 
+#list hr {
+	width: 80%;
+    height: 2px;
+    margin: auto;
+    background: #dadada;
+    margin-bottom: 20px;
+}
 
 #list code, pre {
     font-family: Consolas, Menlo, Monaco, monospace, serif;

@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>typerJs.md</title></head>
+<body><h1>打字机效果文字插件typer.js</h1>
+<hr />
+<p></p>
+<h1>typer.js介绍</h1>
+<p>typer.js是模拟打字机效果的轻型js插件（1.6 Kb），有打字、删除、重复和停顿几种简单的效果。</p>
+<h1>起因</h1>
+<p>由于这几天写个在线简历，我想使用打字的特效，在github上搜到一个叫TheaterJS的插件，效果很好，但是应用时发现，TheaterJS开发版的体积近80kb,而且我只需要它的打字机效果，不需其他复杂的功能，于是又萌生了自己造轮子的想法。</p>
+<h1>构思</h1>
+<p>之前写的listen2me用过类似的文字单播的效果，加上见过许多其他打字机效果，心里觉得还是有底的。</p>
+<p>想了想自己的需求，效果上分为两块：</p>
+<ol><li>
+文字逐个显示</li>
+<li>
+闪烁的光标</li>
+</ol>
+<p>在使用上需要：</p>
+<ol><li>
+输出内容控制简便，模仿TheaterJs输出时的链式调用方法。</li>
+<li>
+控制速度、停顿等</li>
+</ol>
+<h1>研究过程</h1>
+<h2>一些错误的想法</h2>
+<p>打字效果很简单，简单的JS代码配合CSS就很好的还原了TheaterJS的效果，当然这仅是一行文字的输出。</p>
+<p>然后研究输出控制。刚开始单纯的以为借用JQUERY可以直接链式调用与事件的顺序执行，具体写代码才发现，jquery的链式调用是操作节点的，而且它的内置函数应该都设定好了对链式操作的支持，我在网上查阅了一些资料，js可以通过对函数return this来支持链式调用。</p>
+<p>又研究了事件的顺序，同样，本以为jquery的链式调用可以按顺序执行，比如<code>$(&#39;DOM&#39;).fadeIn().fadeOut().animate(....)</code>这个操作就是按照淡入、淡出再动画的顺序进行的，后面的操作会等待前面的完成。写代码时又发现，我写的js无法以这个思路实现按序执行，因为打字效果要使用<code>setTimeout</code>这个函数，使得整个过程成为异步，JS执行时自然无法有序。看了一些JQUERY代码，发现除了链式调用外，可以按序执行代码的方法还有使用<code>callback</code>，比如<code>``$(&#39;DOM&#39;).animate({&#39;width&#39;:&#39;100%&#39;},1000,function(){........})</code>。</p>
+<p>然后自己陷入了混乱，再乱试了各种方法之后，选择了睡觉。</p>
+<p>今天早起，突然就想清楚昨天尝试的方法问题在哪里，比如这段事件等待：</p>
+<pre lang='javascript'>
+while (!isTyping) {
+  this.isTyping = true;
+  speed = speed ? speed : this.speed;
+  var duration = text.length * speed;
+  var set = function() {
+    isTyping = true;
+  }
+  for (var i = 0; i &lt; text.length; i++) {
+    setTimeout(addText, speed * i, text.charAt(i));
+    setTimeout(function() {
+      isTyping = false;
+    }, duration);
+    set()
+  }
+}
+</pre>
+<p>用while其实是个死循环。</p>
+<p>我的本意是建立一个isTyping标志，当第一个打字事件开始时，isTyping为true，这样第二个事件会因为while的条件不成立，一直在空转等待前一个事件完成时isTyping为false。但是，第一个事件完成时，isTyping为false的瞬间，仍是在while循环体内，又触发了while (!isTyping)，所以永远都轮不到第二个事件，永远都停在了第一个事件内。</p>
+<h2>正确的思路</h2>
+<p><strong>事件的顺序</strong></p>
+<p>继而决定使用想到的第二种思路，将所有的打字事件，计算出所消耗的时间，使用<code>setTimeout</code>将每个事件用时累加起来，作为下一个事件的开始事件，也就是说：</p>
+<pre lang='javascript'>
+a事件:	typer.type(&#39;this is the first paragraph&#39;)
+b事件:	typer.type(&#39;this is the second paragraph&#39;)
+.....
+n事件:	typer.type(&#39;this is the first paragraph&#39;)
+</pre>
+<p>a事件需要比如10s,那么b事件的开始时间就是10s后，也就是<code>setTimeout(b事件,10000)</code>，依次类推，这样所有的打字事件都可以由<code>setTimeout</code>控制其顺序了。</p>
+<p><strong>链式调用</strong></p>
+<p>再给每个<code>type</code>函数加上return this，这样就可以链式调用了：</p>
+<pre lang='javascript'>
+var babyTyper = new typer(DOM);
+babyTyper
+.type(&#39;I am a babyTyper&#39;)
+.type(&#39;and I love typing in this way&#39;)
+.type(&#39;I feel so happy!&#39;)
+
+或者这样
+
+babyTyper.type(&#39;I am brother of that guy,&#39;).type(&#39; I love typing in a row, &#39;).type(&#39;because it is cool!&#39;)
+</pre>
+<p><strong>闪烁的打字光标效果</strong></p>
+<p>刚开始研究效果时，使用过<code>INPUT</code>输入框，去除边框<code>border</code>和<code>outlook</code>后，只需获得输入焦点，JS将文字输入到input即可，同样是打字的效果，但是有一点不足，无法控制闪烁光标的样式，因为这个光标是继承自系统的，无论怎么调节CSS字体样式，光标都是那么细小，跳动的频率也控制不了。</p>
+<p>这里就借鉴了TheaterJS的方法，使用<code>::after</code>伪元素给内容加入一个动画内容：</p>
+<pre lang='undefined'>
+.typer-place::after {
+content: &#39;|&#39;;
+animation: blink 800ms infinite;
+}
+@keyframes blink {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+</pre>
+<p>这样就实现了打字时闪烁光标的效果。</p>
+<p><strong>循环重复</strong></p>
+<p>功能都完成后，我又想到需要一个循环播放的功能。想了一会，想到一个最基础的方法，就是建立一个记录操作的方法，把每次的输出与删除都按顺序记录。然后再把记录的内容再次执行就可以。看了几个源码，他们写的重复也是记录操作再次执行。</p>
+<p>但是我总觉得这样太麻烦，不够简便，不如想一种方法无需记录，直接重复。查阅了些资料，好像没有什么现成的例子重复执行代码的，最终写成如下：</p>
+<pre lang='JavaScript'>
+var typer = new typer(DOM);
+setInterval(repeat,typer.duration)
+function repeat(){
+  typer.type(&#39;测试&#39;)
+  typer.type(&#39;测试&#39;)
+  typer.type(&#39;测试&#39;)
+}
+</pre>
+<p>这个逻辑很清晰，我很喜欢，但是写出来的内容太多了，不够简洁。最终我还是选择了记录操作，实现重复只需一个方法<code>typer.repeat()</code>。</p>
+<p></p>
+<p>以上几点是代码的关键部分，完成之后，其余的内容都相对简单，很快就处理完了。</p>
+<p></p>
+<h1>源码及使用</h1>
+<p><strong>源码</strong>在我的github</p>
+<p><a href='https://github.com/HTML50/typer.js'>typer.js</a></p>
+<p><strong>使用方法</strong>很简单</p>
+<pre lang='javascript'>
+&lt;script src=&quot;typer.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  var typer = new typer(&#39;DOM的ID&#39;))
+  typer.type(&#39;hi~&#39;)
+  typer.type(&#39;当然也可以按照链式调用那样省略typer&#39;)
+&lt;/script&gt;
+</pre>
+<p>具体使用方法参见github readme</p>
+<h1>小结</h1>
+<p>总体来讲，就是打字事件按顺序调用和寻找简便重复方法这两部分想的挺久的，其余都很简单。</p>
+</body>
+</html>
