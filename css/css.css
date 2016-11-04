@@ -161,11 +161,20 @@ a:hover{
 	margin:50px auto;
 }
 /*list*/
-
+.list-flex{
+	display:flex;
+	 flex-direction: column;
+    justify-content: center;
+}
 
 .item {
 	display:flex;
 	justify-content: center;
+}
+
+.left-box {
+    text-align: right;
+    width: 40%;
 }
 
 .item-img img{
@@ -182,9 +191,7 @@ a:hover{
 
 .right-box {
 	padding:20px;
-	display:flex;
-	flex-direction: column;
-	justify-content: center;
+	width: 60%;
 }
 
 
@@ -199,6 +206,15 @@ a:hover{
 	padding: 2em;
     box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.29); 
 	margin-bottom: 5%;
+}
+
+
+#list a {
+    color: #000;
+}
+
+#list p>a {
+    color: #36af6d;
 }
 
 #list h1, h2, h3,strong,code,pre {
@@ -219,27 +235,25 @@ a:hover{
 #list hr {
 	width: 80%;
     height: 2px;
-    margin: auto;
-    background: #dadada;
-    margin-bottom: 20px;
+    background: #eeedf0;
+    margin-bottom: 20px auto;
 }
 
 #list code, pre {
-    font-family: Consolas, Menlo, Monaco, monospace, serif;
-    font-size: 0.9em;
+ font-family: Consolas, Menlo, Monaco, monospace, serif;
+    font-size: 0.8em;
     background: white;
+    color: rgb(57, 52, 52);
 }
 
 #list code{
     border: 1px solid rgb(221, 221, 221);
-    padding-bottom: 8px;
-    padding-top: 6px;
-	margin-left:5px;
-	margin-right:5px;
+    padding: 6px;
+	margin: auto 5px;
 }
 
 #list pre{
-	margin-left: 1em;
+    margin: 1em auto;
     padding-left: 1em;
     border: 1px solid rgb(221, 221, 221);
     padding-bottom: 8px;
@@ -248,10 +262,9 @@ a:hover{
     display: block;
     break-inside: avoid;
     text-align: left;
-    overflow: visible;
     white-space: pre-wrap;
-    position: relative !important;
-    background: inherit;
+    background: rgba(204, 204, 204, 0.17);
+	width: 90%;
 }
 
 #list h2::after {
