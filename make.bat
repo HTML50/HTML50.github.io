@@ -1,21 +1,28 @@
-:: è‡ªåŠ¨å°†æŒ‡å®šæ–‡ä»¶å¤¹ä¸­çš„å›¾ç‰‡å†™å…¥åˆ° html æ–‡ä»¶ä¸­
+:: ×Ô¶¯½«Ö¸¶¨ÎÄ¼ş¼ĞÖĞµÄÍ¼Æ¬Ğ´Èëµ½ html ÎÄ¼şÖĞ
 @echo off & SetLocal EnableDelayedExpansion
-For /f "delims=" %%i in ('dir /b blog') do (Set a=%%~pi
-Set a=!a:\= !)
-For %%i in (%a%) do Set b=%%i
-::è·å–æ–‡ä»¶å¤¹å
-Set n=0
-(
-Echo ^<Html^>
-Echo ^<Title^>
-Echo %b%
-Echo ^</Title^>
-Echo ^<Body^>
-For /r %%i in (*.html) do (Echo ^<Img Src="blog/%%i"^>
-Set n=1)
-::å°†æŒ‡å®šæ–‡ä»¶å¤¹ä¸­æ‰€æœ‰çš„å›¾ç‰‡åœ°å€å†™å…¥åˆ°htmlæ–‡ä»¶ä¸­ã€‚
-Echo ^</Body^>
-Echo ^</Html^>
-)>"%b%.html"
-If %n%==0 Msg * "æŒ‡å®šæ–‡ä»¶å¤¹ä¸­æ²¡æœ‰å›¾ç‰‡" & del %b%.html
-If %n%==1 Start "" "%b%.html"
+if EXIST test.html del test.html
+For /f "delims=" %%i in ('dir blog /b /O-D') do (
+echo ^<div class='item'^>
+echo ^<div class='left-box'^>
+echo ^<div class='item-img'^>
+echo ^<a href='javascript:makeRequest^("./blog/%%i",1^)'^>
+echo ^<img src='img/me.png'^>
+echo ^</div^>
+echo ^</div^>
+echo ^<div class='right-box'^>
+echo ^<div class='item-title'^>
+echo type ./blog/%%i | findstr "<body><h1>.*</h1>"
+echo ^</div^>
+echo ^<div class='item-date'^>
+echo %date:~0,4%-%date:~5,2%-%date:~9,2%
+echo ^</div^>
+echo ^<div class='item-summary'^>
+echo ÎÄÕÂµÄ´ó¸ÅÄÚÈİÊÇ£¬¾ÍÊÇ²âÊÔ£¬Ã»ÆäËûÊ²Ã´
+echo ^</a^>
+echo ^</div^>
+echo ^</div^>
+echo ^</div^>
+echo ^<div class='divider'^>
+echo ^</div^>
+)>>test.html
+start test.html
