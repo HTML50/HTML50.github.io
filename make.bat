@@ -11,7 +11,7 @@ echo ^</div^>
 echo ^</div^>
 echo ^<div class='right-box'^>
 echo ^<div class='item-title'^>
-echo type ./blog/%%i | findstr "<body><h1>.*</h1>"
+FOR /F "tokens=2 delims=</h1>"  %%I IN ('findstr "<body><h1>.*</h1>" .\blog\%%i') DO echo %%I
 echo ^</div^>
 echo ^<div class='item-date'^>
 echo %date:~0,4%-%date:~5,2%-%date:~9,2%
