@@ -80,7 +80,7 @@ function MouseWheelHandler(e) {
 }
 
 document.addEventListener("scroll", function(){
-	if(window.pageYOffset > 800){
+	if(window.pageYOffset > 600){
 		if(document.getElementById('nav').style.opacity==0) document.getElementById('nav').style.opacity=1;
 	}
 	else{
@@ -103,7 +103,7 @@ function smoothMove(y){
 	id = setInterval(function(){
 		window.scrollTo(0, height);
 		if(height<y-110){
-		height+=100;
+		height+=80;
 		}
 		else if(height<y-20){
 			height+=3;
@@ -120,7 +120,7 @@ function smoothMove(y){
 		id = setInterval(function(){
 		window.scrollTo(0, height);
 		if(height > y+110){
-		height-=100;
+		height-=80;
 		}
 		else if(height>y+20){
 			height-=3;
