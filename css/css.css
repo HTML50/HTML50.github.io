@@ -7,7 +7,7 @@
 	margin: 0;
 	padding: 0;
 	border:none;
-	transition:all .25s;
+	//transition:all .25s;
 }
 
 html,body {
@@ -26,10 +26,11 @@ body ::selection {
 
 a{
 text-decoration:none;
+	transition:text-shadow .25s;
 }
 
 a:hover{
-	text-shadow:1px 1px 10px #000;
+	text-shadow: 1px 5px 20px #000000;
 }
 
 .ab-center{
@@ -130,7 +131,10 @@ a:hover{
 
 .header a{
 	color:#fff;
+	transition:text-shadow .25s;
 }
+
+
 
 .header-box {
 	height:500px;
@@ -163,7 +167,7 @@ a:hover{
 /*list*/
 .list-flex{
 	display:flex;
-	 flex-direction: column;
+	flex-direction: column-reverse;
     justify-content: center;
 }
 
@@ -228,7 +232,6 @@ a:hover{
 }
 #list h1:nth-child(1){
 	font-size: 2.5em;
-    width: 80%;
     margin: auto;
 }
 
@@ -236,7 +239,7 @@ a:hover{
 	width: 80%;
     height: 2px;
     background: #eeedf0;
-    margin-bottom: 20px auto;
+    margin: 20px auto;
 }
 
 #list code, pre {
