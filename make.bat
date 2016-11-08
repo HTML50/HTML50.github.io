@@ -1,7 +1,7 @@
-:: 自动将指定文件夹中的图片写入到 html 文件中
+::根据最新文档，自动生成html，并更新上传 
+chcp 65001
 @echo off
 set memo=%1
-echo memo
 if {%1}=={} set memo=文章忘写概述标题了
 FOR /F %%I IN ('DIR /B /OD /TC list-img') DO set img=%%I
 FOR /F %%I IN ('DIR /B /OD /TC blog') DO set file=%%I
@@ -35,7 +35,6 @@ echo=
 echo ^</div^>
 echo ^</a^>
 )>>list.html
+chcp 936
 mode con cols=130 lines=230
-git add ./
-git commit -m 'update'
-git push
+echo 生成HTML完毕！
