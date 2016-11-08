@@ -36,3 +36,6 @@ echo ^</div^>
 echo ^</a^>
 )>>list.html
 chcp 936
+git add ./
+git commit -m 'update'
+git push
