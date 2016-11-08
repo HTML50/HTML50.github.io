@@ -9,6 +9,12 @@ if you like this, you can use my way.
 
 1.I build a blog site with theme.
 
-2.write a one-key cmd file for generate html and git push.
+2.Wrte a new blog and export  it into html file to blog folder.
 
-3.updated.
+3.write a  batch file for update stie and git push. (the batch is mainly find the newest html file and put it into the blog list)
+
+4.updated.
+
+## PS
+
+this tool is for my personal usage, only work in Windows. If you want to build a site without any frameworks and publish on Github, you can try. I feel good about this way.
