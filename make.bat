@@ -36,6 +36,7 @@ echo ^</div^>
 echo ^</a^>
 )>>list.html
 chcp 936
+mode con cols=130 lines=230
 git add ./
 git commit -m 'update'
 git push
