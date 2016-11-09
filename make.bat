@@ -2,7 +2,7 @@
 chcp 65001
 @echo off
 set memo=%1
-if {%1}=={} set memo=文章忘写概述标题了
+if {%memo%}=={} set memo=文章忘写概述标题了
 FOR /F %%I IN ('DIR /B /OD /TC list-img') DO set img=%%I
 FOR /F %%I IN ('DIR /B /OD /TC blog') DO set file=%%I
 (
