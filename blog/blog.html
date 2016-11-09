@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>blog的制作总结.md</title></head>
+<body><h1>blog的制作总结</h1>
+<hr />
+<h1>琐碎的话</h1>
+<p>这两天刚写完所有页面与功能，回头再看看，有意思的一点是，每次写代码都像是轮回的过程。</p>
+<p>我上学那会儿经常会遇到一些生活、学习上的看似棘手的问题，那时我总是在举步维艰时强迫自己认为能找到出路。久而久之，自己也产生了这样一种思维模式，事情总是可以找到答案的。</p>
+<p>为了能跳槽找到自己喜欢的计算机工作，这一段时间内主要在学习时间前端知识，写了几个自己觉得挺有趣的页面，在这个过程中，我又感觉到写代码也与之前解决问题的模式相似，每一次完成一个完整的东西，都形成了一种特定思维模式的一小部分，也许这就是写代码的乐趣。</p>
+<h1>为什么写</h1>
+<p>写个人博客，主要是因为很多幼稚的想法难以登堂入室，不如自建网站畅所欲言。次要原因是自己喜欢造轮造车，认为纯手工才有乐趣，也是锻炼。而且不用像技术博客那样刻板，总是以源码的形式呈现，我觉得技术始终是一个工具，自己用开心就好，就像这个博客，我使用批处理去生成html，虽然很过时，但是我觉得很有趣。</p>
+<h1>博客的结构</h1>
+<p>架设博客初始，我计划的是采用hexo框架，后来我粗略计算了一下，使用hexo要先用npm下载程序，写博客，然后在命令行用hexo发布。如果我使用git push，只需有一个网页就可以。于是决定自己写静态博客，自己发布，自己git push。</p>
+<h2>发表新文章</h2>
+<p>因为我习惯用Typora这个markDown格式软件写文字，恰好其又有导出html功能。我的构想是，用这个软件写好一篇博文，导出成html文件，将html文件放到具体的文件夹内，编写一个nodejs模块，检测到新文件的产生，自动生成一个博文页面。</p>
+<p>在写好前端页面后，我发现，用nodejs去监控实在是太麻烦了，我想了想，决定用最原始的办法，使用windows自带的功能批处理去完成新文章页面的生成。</p>
+<pre lang=''>
+:: 根据最新文档，自动生成html
+chcp 65001
+@echo off
+set memo=%1
+if {%1}=={} set memo=文章忘写概述标题了
+FOR /F %%I IN (&#39;DIR /B /OD /TC list-img&#39;) DO set img=%%I
+FOR /F %%I IN (&#39;DIR /B /OD /TC blog&#39;) DO set file=%%I
+(
+echo=
+echo ^&lt;!-----------------item-----------------^&gt;
+echo=
+echo ^&lt;div class=&#39;divider&#39;^&gt;^&lt;/div^&gt;
+echo=
+echo ^&lt;a href=&#39;javascript:makeRequest^(&quot;./blog/%file%&quot;,1^)&#39;^&gt;
+echo ^&lt;div class=&#39;item&#39;^&gt;
+echo=
+echo ^&lt;div class=&#39;left-box&#39;^&gt;
+echo ^&lt;div class=&#39;item-img&#39;^&gt;
+echo ^&lt;img src=&#39;list-img/%img%&#39;^&gt;
+echo ^&lt;/div^&gt;
+echo ^&lt;/div^&gt;
+echo=
+echo ^&lt;div class=&#39;right-box&#39;^&gt;
+echo ^&lt;div class=&#39;item-title&#39;^&gt;
+FOR /F &quot;tokens=2 delims=&lt;/h1&gt;&quot; %%I IN (&#39;findstr /i /r &quot;&lt;body&gt;&lt;h1&gt;.*&lt;/h1&gt;&quot; .\blog\%file%&#39;) DO echo %%I
+echo ^&lt;/div^&gt;
+echo ^&lt;div class=&#39;item-date&#39;^&gt;
+echo %date:~0,4%-%date:~5,2%-%date:~9,2%
+echo ^&lt;/div^&gt;
+echo ^&lt;div class=&#39;item-summary&#39;^&gt;
+echo %memo%
+echo ^&lt;/div^&gt;
+echo ^&lt;/div^&gt;
+echo=
+echo ^&lt;/div^&gt;
+echo ^&lt;/a^&gt;
+)&gt;&gt;list.html
+</pre>
+<p>这个批处理的主要作用是，当我将生成的html放到blog文件夹内，执行批处理，查询到blog文件夹内最新的一个文件，读取文件名、<code>&lt;body&gt;&lt;h1&gt;</code>和<code>&lt;/h1&gt;</code>之间的标题、当日的时间，追加写入到list.html（这是所有博文的列表页面）。这样一来，每次写好博文，生成html，执行批处理后，就在首页的列表加入了最新的博文，完成了导航。</p>
+<h2>前端</h2>
+<p>前端页面采用的是ajax整站无刷新访问，主要有两个技术细节：</p>
+<p><strong>pushState + onpopstate的应用</strong></p>
+<p>采用ajax访问是没有历史记录的，这意味着无法通过前进、后退按钮来导航页面。以前的解决方法是修改读取<code>location.href</code>的#，因为锚点的变化会产生历史记录。HTML5的方法是pushState，这是改变历史记录与<code>location.href</code>的API，而onpopstate是监控历史记录改变的API，二者配合，就可以使得ajax操作与普通页面访问的行为模式一样，不影响体验。</p>
+<p>而且这两个API使用非常简单，都只有一行代码。</p>
+<pre lang='undefined'>
+ajaxRequest(url){
+ajax(url);
+history.pushState(null, null, url);
+}
+
+window.onpopstate = function(event) {
+		makeRequest(location.pathname);	
+};
+</pre>
+<p></p>
+<p><strong>页面切换间的动画</strong></p>
+<p>在点击任意一个页面后，之前的页面进行一段隐去的效果，然后新的页面读取完成时，再进行显示的效果。</p>
+<p>动画都很简单，当ajax读取完成后，在新页面的CSS样式里加上一个含animation的class，比如：</p>
+<pre lang='undefined'>
+document.getElementById(&#39;list&#39;).classList.add (&#39;animation&#39;,&#39;fadeInUp&#39;);
+</pre>
+<pre lang='undefined'>
+.animation {
+    animation-duration: 0.25s;
+    transition-timing-function: ease-in;
+    animation-fill-mode: both;
+  }
+  
+.fadeInUp {
+    animation-name: fadeInUp;
+  }
+  
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+</pre>
+<p>这样新页面载入完成时，就会先由透明度<code>opacity:0</code>渐变为<code>1</code>，同时从页面下方飞入到自己的位置。</p>
+<p>同理，离开页面时的渐隐效果也是加入animation的样式，需要注意的是，要用js的<code>setTimeout</code>加一个页面的延时，这个时长与渐隐动画的时长相同，用来完成整个渐隐效果后，再执行新页面的载入。</p>
+<h1>遇到的问题</h1>
+<p><strong>前进、后退时滚动条的位置问题</strong></p>
+<p>由于不同页面间的访问是整体连贯的动画效果，在使用后退或前进按钮导航页面时，会出现滚动条猛的定位在一个不同的位置，导致页面平滑滚动失效。上网查了一翻，是因为浏览器的<code>history</code>会记录每个页面滚动条的位置信息，而且html5新的API，pushState与replaceState都无法操作位置信息。多次尝试后，使用如下代码，屏蔽<code>history</code>的自动滚动。</p>
+<pre lang='undefined'>
+if (&#39;scrollRestoration&#39; in history) {
+  history.scrollRestoration = &#39;manual&#39;;
+}
+</pre>
+<p><strong>批处理中文乱码</strong></p>
+<p>批处理按理来讲需要以ANSI格式存储，这样在CMD内才能正确显示中文，但这样去读取utf8编码的网页会出现中文乱码。百般尝试，最终将bat文件与CMD的文字编码都改为utf8格式。这样既能读取utf8的内容，同时也能生成含有中文的网页。</p>
+<p>需要注意的一点是，Unix与windows/dos格式的文件会因为回车符号的不同导致批处理运行时出错，一定要看清编码格式，这样就不会出现中文乱码了。</p>
+<h1>总结</h1>
+<p>写代码总是会遇到各种意外的想不通的问题，一般情况下都是细小的不经意的错误导致的，只要认真排查，一定可以找到症结所在。</p>
+<p></p>
+</body>
+</html>

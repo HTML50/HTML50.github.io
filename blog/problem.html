@@ -3,62 +3,31 @@
 <head>
 <meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
 <title>problem.md</title></head>
-<body><h1>resume制作中遇到的问题与解决</h1>
+<body><h1>resume遇到的CSS问题与解决</h1>
+<hr />
+<p>这几天做了一个在线简历页面，期间遇到很多小问题，这里记录一下，希望能帮到寻求类似问题答案的朋友。</p>
 <ol><li>
-<p>css中<code>!important</code>属性与jquery的<code>show()</code>方法冲突。</p>
-</li>
+css中<code>!important</code>属性与jquery的<code>show()</code>方法会冲突。如果某一ID的元素内有<code>display:none !important</code>的设定，则<code>show()</code>方法无法更新<code>display</code>的值。</li>
 <li>
-<p>div居中：同样使用<code>absolute</code>定位，参数均为<code>left:50%;top:50%</code>，两个页面效果不同。</p>
-<p>div居中的坑：需要指明height,width.不然无效。</p>
-</li>
+div居中：若使用<code>position:absolute</code>定位，则需给元素增加宽高<code>width</code>,<code>height</code>才可行。</li>
 <li>
-<p>typer.js中blink属性无效，光标不闪烁。</p>
-<p>DIV的transform属性在chrome中致使blink无效，firefox中尚可。需使用另外的居中定位方法。</p>
-</li>
+文字的宽度是由字体本身确定的。等宽字体的宽度可以通过font-size确定，非等宽字体的宽度都不同。</li>
 <li>
-<p>文字大小值与父元素的关系，height, line-height, font-size，文字初始的默认高度是什么</p>
-</li>
+font-weight有时会失效。这是因为一种字体本身可能就正常和加粗两种设定，并不会随着font-weight值的改变而变化。我调用google fonts时发现css中调用了同一款字体的多种样式，有italic/bold等，我只下载了italic样式的woff2格式字体到本地，结果用normal样式显示还是斜体，无法设置其他值。</li>
 <li>
-<p>字体宽度，高度，rem，ch的使用。</p>
-</li>
+css选择器优先级问题。在复杂的样式中，总是因为不注意优先级问题导致意外，这点要多注意。</li>
 <li>
-<p>font-weight失效。</p>
-</li>
+<code>text-align:center</code>与<code>&lt;center&gt;</code> 均无法使文字居中。因为自己设置了<code>letter-spacing</code>，这个参数导致每个字符后都会有一定的距离，同时<code>font-family</code>的不同，也会使有些文字看起来和边界有些距离，这两点导致看似无法居中。给最后一个文字取消<code>letter-spacing</code>就可以。</li>
 <li>
-<p>css选择器优先级</p>
-</li>
+node.js服务器返回的content-type:text/javascript会导致引入的js失效。这个暂时不知道原因，反正加上<code>content-type</code>后，js就失效。</li>
 <li>
-<p>flex布局内，text-align:center  <code>&lt;center&gt;</code> 均无法使内如文字居中。（letter-spacing:1rem;和字体的缘故，导致文字末端与border有一定的距离）</p>
-</li>
+元素使用<code>transition</code>动画过渡时，如果使用<code>style</code>定义过初始状态，那么添加的class要指定<code>!important</code>，不然会因为优先级关系失效。</li>
 <li>
-<p>z-index与transform层次顺序</p>
-</li>
+块级元素换行时，从左到右的下划线动画就会因块变形而出现只显示换行部分的bug，只能根据换行添加多个动画。</li>
 <li>
-<p>node.js服务器返回的content-type:text/javascript会导致引入的js失效。</p>
-</li>
+<code>text-shadow</code>的不当设置遮挡文字，导致<code>color:rgba</code>样式失效。</li>
 <li>
-<p>transition style=&#39;&#39;指定时 无效。</p>
-</li>
-<li>
-<p>span元素的fadeIn,当含有h1时无效。</p>
-</li>
-<li>
-<p>当元素换行时，下划线动画就会因块变形而出现只显示部分的bug</p>
-</li>
-<li>
-<p>color:rgba透明度失效。。。text-shadow</p>
-</li>
-<li>
-<p>fadeIn有时无效？元素的:hover上加有transition属性0.1s。。。。。。switch 丢了 break;</p>
-</li>
-<li>
-<p>chrome与firefox字体大小不同导致排版出错。(自定义大小)</p>
-</li>
-<li>
-<p>chrome firefox排版不同，因为chrome最小字号12px,所有rem单位导致排版都不同。我基本上使用的是rem单位，chrome下所有的1 rem =12px 而非10px.</p>
-</li>
+chrome与firefox字体大小不同导致排版出错。因为chrome能显示的最小字号是12px，如果定义body的<code>font-size</code>为10px，在chrome下<code>font-size:1rem</code>的字体大小将渲染为12px，firefox为10px，但对于2rem的字体，chrome与firefox渲染相同，均为为20px。同时，在排版方面，元素的宽度若使用rem为单位，则chrome的<code>rem</code>定义会强制以12px为基础，比如一个<code>div</code>的<code>width</code>为10rem，渲染出来的宽度为120px，firefox中则为100px。</li>
 </ol>
-<p></p>
-<p>草稿，待完成。</p>
 </body>
 </html>
