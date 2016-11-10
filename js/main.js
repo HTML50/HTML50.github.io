@@ -1,4 +1,4 @@
-var httpRequest,id,flag=0;
+var httpRequest,id,flag=0,previousHeight;
 //flag:
 //0: first time on site
 //1: open blog page
@@ -20,7 +20,7 @@ if (!httpRequest) {
 
 //blog flag
 if(num == 1){flag=1;}
-
+document.getElementById('list').style.height = '10000px';
 document.getElementById('spinner').style.display='block';
 document.getElementById('list').classList.add ('animation','fadeOutDown');
 httpRequest.onreadystatechange = alertContents;
@@ -48,13 +48,17 @@ if (httpRequest.readyState === XMLHttpRequest.DONE) {
 			ajaxSource = ajaxSource.replace(/<!doctype html>[\s\S|\.]*<body>/, '');
 			flag=null;
 		}
-		
 	document.getElementById('list').innerHTML = ajaxSource;
 	document.getElementById('list').classList.remove ('fadeOutDown');
 	document.getElementById('list').classList.add ('fadeInUp');
 	document.getElementById('spinner').style.display='none';
+			setTimeout(function(){
+			document.getElementById('list').style.height = '';
+		},1000)
 	if(flag == 0){flag=null;}
-	else{smoothMove(520);}
+	else{
+		smoothMove(520);
+		}
   } else {
 	console.debug('There was a problem with the request.');
   }
@@ -119,6 +123,9 @@ function smoothMove(y){
 	else {
 		id = setInterval(function(){
 		window.scrollTo(0, height);
+		if(height > y+1000){
+		height-=500;
+		}
 		if(height > y+110){
 		height-=80;
 		}
