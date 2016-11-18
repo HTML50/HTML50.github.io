@@ -25,7 +25,7 @@ echo ^<div class='item-title'^>
 FOR /F "tokens=2 delims=</h1>" %%I IN ('findstr /i /r "<body><h1>.*</h1>" .\blog\%file%') DO echo %%I
 echo ^</div^>
 echo ^<div class='item-date'^>
-echo %date:~0,4%-%date:~5,2%-%date:~9,2%
+echo %date:~0,4%-%date:~5,2%-%date:~8,2%
 echo ^</div^>
 echo ^<div class='item-summary'^>
 echo %memo%
