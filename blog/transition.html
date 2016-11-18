@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>transition的设置.md</title></head>
+<body><h1>transition all不能乱设</h1>
+<hr />
+<p>今天按照前几天的计划，修补listen2me里面背景变化时的小问题：多个背景切换时，动态放大的效果有抖动。原来的方法是使用jquery的<code>animate</code>，由100%在几秒内转化到112%。</p>
+<pre lang='javascript'>
+$(&quot;#backGround&quot;).animate({&quot;background-size&quot;:&quot;100%&quot;}
+</pre>
+<pre lang='javascript'>
+$(&quot;#backGround&quot;).animate({&quot;background-size&quot;:&quot;112%&quot;}
+</pre>
+<p>我反复调整了半天，都无法找到是什么的问题致使整个背景图层抖动。</p>
+<p>最后我放弃使用Jquery的<code>animate</code>，转投CSS3，给背景图层加一个<code>transition</code>过渡效果，设置不同的缩放值。</p>
+<pre lang='javascript'>
+$(&quot;#backGround&quot;).css(&quot;transform&quot;,&quot;scale(1)&quot;)
+</pre>
+<pre lang='javascript'>
+$(&quot;#backGround&quot;).css(&quot;transform&quot;,&quot;scale(1.2)&quot;)
+</pre>
+<p>按说该正常显示了，仍然抖动。</p>
+<p>我观察到，每次切换背景时，由于图片的尺寸不同，都会有一些小的缩放过渡。我以为是图片尺寸的不同导致的图片需要<code>cover</code>整个屏幕时产生的抖动。</p>
+<p>于是找了几张相同尺寸的图片，依旧抖动。</p>
+<p>我想到之前用过一个纯CSS3背景渐变的代码，借用一番，发现不论图片尺寸如何，都可以无抖动切换。</p>
+<p>想了想，把问题锁定在<code>transition</code>这个参数上，因为前几天做博客时，为了方便调试，我加了</p>
+<pre lang='css'>
+* {
+transition:all 1s;
+margin:0;
+padding:0;
+}
+</pre>
+<p>可以方便观察到修改布局时的变化。但是，博客列表的<code>a:hover</code>效果反应非常慢，console.warn()还提示我由于页面慢，导致滚动条的EventListener响应时间异常。最终我把<code>transition:all</code>去掉后，页面就没问题了。我的想法是，*代表的内容太多，页面稍微有一点重绘，就会有很多过渡导致页面慢。</p>
+<p>同样的，对于背景图片切换，<code>transition:all</code>会把所有的改变都加上过渡效果，这样才有了不同尺寸图片切换时的变形过渡、抖动。</p>
+<p>修改一下</p>
+<pre lang='css'>
+#backGround {
+	transition:transform 15s linear;
+	}
+</pre>
+<p>这样就没有抖动了，背景的放大效果就很平滑。</p>
+<p>至于Jquery，我还是没有找到合适的方法，暂时只能使用CSS设定图片的放大。</p>
+</body>
+</html>
