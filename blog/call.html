@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>Array.prototype.slice.call(arguments)是如何工作的.md</title></head>
+<body><h1>Array.prototype.slice.call(arguments)是如何工作的</h1>
+<hr />
+<p>今天在学习React的时候遇到一个问题，就是在生成Component时采用Class方法定义，需要在constructor中对内部函数进行this绑定。由于不太理解，我开始翻看文档，在<a href='https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_objects/Function/bind'>mozilla官方文档</a>上看到这样的代码：</p>
+<pre lang='javascript'>
+function list() {
+  return Array.prototype.slice.call(arguments);
+}
+
+var list1 = list(1, 2, 3); // [1, 2, 3]
+
+// Create a function with a preset leading argument
+var leadingThirtysevenList = list.bind(null, 37);
+
+var list2 = leadingThirtysevenList(); 
+// [37]
+
+var list3 = leadingThirtysevenList(1, 2, 3);
+// [37, 1, 2, 3]
+</pre>
+<p>前几天还在感叹，要多看代码，学习不同的写法，开阔视野。今天又看到了看不懂的奇怪代码，就这一句<code>return Array.prototype.slice.call(arguments)</code>上来就看蒙了，list1怎么变成数组了？</p>
+<p></p>
+<p>为了搞明白，我先看了slice的<a href='http://www.w3school.com.cn/jsref/jsref_slice_array.asp'>用法</a>，就是<code>slice() 方法可从已有的数组中返回选定的元素。</code>应该是这样用的<code>arrayObject.slice(start,end)</code>。但是上面的代码是<code>list(1,2,3)</code>，最终得到[1,2,3]这样的数组，为什么参数不是slice要分割的始末位置。</p>
+<p>应该与<code>call(arguments)</code>有关，于是又研究了call与arguments的用法。</p>
+<p></p>
+<p>arguments是一个类似数组的东西，具有length属性，是每个函数内部的变量。比如可以这样用</p>
+<pre lang='javascript'>
+function msg(){
+  alert(arguments[0]);
+}
+msg(&#39;haha&#39;);
+</pre>
+<p>就算函数没有设置参数变量，也可以由arguments获取传入的参数。</p>
+<p></p>
+<p>call与apply类似，都是来改变当前函数this值的，唯一不同的一点是，call接收的是连续参数，而apply接收的是数组（或类似数组）的参数。原理很简单，写代码时使用方法可能会有不同：</p>
+<pre lang='javascript'>
+var boy = {
+  gender: &#39;boy&#39;,
+  getGender: function(){
+    alert(&quot;I am a &quot;+this.gender);
+  }
+};
+
+var girl ={
+  gender:&#39;girl&#39;
+};
+
+boy.getGender();
+boy.getGende.call(girl);
+</pre>
+<p></p>
+<p>看完这几种方法的使用，问题来了：为什么<code>list(1, 2, 3)</code>这样能得到一个数组？</p>
+<p>因为没有吃透call的意思，我刚开始依葫芦画瓢写了一句<code>Array.prototype.slice(1,2,3);</code>，就报错了。我想了想slice的用法，这是针对于数组的一个方法，肯定是将<code>list(1,2,3)</code>中的参数变成了一个数组。我试了一下<code>console.log(Array.prototype.slice())</code>，果然得到了一个空的数组<code>[]</code>，也就是说，<code>Array.prototype.slice.call(arguments)</code>这句话通过call，把参数作为this替代了数组原型（一个空数组？），效果等同于<code>[1,2,3].slice()</code>。</p>
+<p><code>Array.prototype.slice.call(arguments)</code>这句话其实就是将一个参数转化为数组的方法，只要理解了call、arguments和this的作用，明白这个工作原理不是什么难事。</p>
+<p><strong>总结</strong></p>
+<p>其实搞明白这个东西也没花多长时间，但是在看资料的过程中我意识到一个更重要的问题，就是学习知识还是通过google去看官方文档好。我这次跟以前一样，在百度上看了技术博客，看了第三方文档，糊里糊涂的找到了mozilla上面对于<a href='https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/slice'>slice这个函数的解释</a>，文档在用法一栏清楚的写明语法：</p>
+<pre lang='undefined'>
+arr.slice()
+arr.slice(begin)
+arr.slice(begin, end)
+</pre>
+<p>让我一下就明白了，不加参数是保留整个数组对象，从而解决了关于call(arguments)的疑惑。</p>
+<p>之前看w3school，语法中就没无参数这一项。</p>
+<p>总之，舍本逐末，饶了很多弯路。今后的学习方法已经十分明确，就是去仔细阅读官方文档，这样才是高效的选择。</p>
+</body>
+</html>
