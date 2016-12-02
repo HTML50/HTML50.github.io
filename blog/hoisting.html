@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>关于变量提升(hoisting)的实验.md</title></head>
+<body><h1>关于变量提升(hoisting)的实验</h1>
+<hr />
+<p>在js中，有两种情况会出现变量提升。一是定义一个变量(variable)，二是定义一个函数(function)</p>
+<h2>variable</h2>
+<p>这里借用w3schools的例子：</p>
+<pre lang='javascript'>
+x = 5; // Assign 5 to x
+alert(x);
+var x; // Declare x
+</pre>
+<pre lang='javascript'>
+x = 5; // Assign 5 to x
+var x; // Declare x
+alert(x);
+</pre>
+<p><strong>这两块代码效是一样的，这就是定义变量时的提升，关键在于<code>var</code>这个关键词，可以将变量声明自动移动到当前作用域(current scope)的最顶端。</strong></p>
+<pre lang='javascript'>
+x = 5; // Assign 5 to x
+alert(x);
+</pre>
+<p>这种直接写的方式和上面基本一致，只有一些属性上的小区别，具体可以参考<a href='http://stackoverflow.com/questions/1470488/what-is-the-purpose-of-the-var-keyword-and-when-to-use-it-or-omit-it' target='_blank' >http://stackoverflow.com/questions/1470488/what-is-the-purpose-of-the-var-keyword-and-when-to-use-it-or-omit-it</a>。</p>
+<p></p>
+<p>为了避免错误，最好的方法就是在开始的位置写好变量声明，并且在所有地方使用var。</p>
+<h2>function</h2>
+<p>函数声明也有同样的效果，但是需要注意，只有声明（Function Declaration）这一种形式有提升的效果：</p>
+<pre lang='javascript'>
+test();//work
+
+function test(){
+  alert(&#39;nice&#39;)
+}
+</pre>
+<p>使用函数表达式（Function Expression）就无法提升。</p>
+<pre lang='javascript'>
+test();//not work
+
+var test = function(){
+  alert(&#39;nice&#39;)
+}
+</pre>
+<p></p>
+<h2>variable与function放在一起时</h2>
+<pre lang='javascript'>
+var test = &#39;i\&#39;m tset&#39;
+function test(){
+  alert(&#39;nice&#39;);
+}
+
+alert(test);
+//i&#39;m test
+</pre>
+<pre lang='javascript'>
+function test(){
+  alert(&#39;nice&#39;);
+}
+var test = &#39;i\&#39;m tset&#39;
+
+alert(test);
+//i&#39;m test
+</pre>
+<p>上面两个等效。
+本来我以为，这两个能产生提升的东西放在一起时，function的提升级别更高些，过程就是test()被提到最高处，然后被var test赋值覆盖掉。</p>
+<p>然后我又试了一下这样写：</p>
+<pre lang='javascript'>
+function test(){
+  alert(&#39;nice&#39;);
+}
+var test;
+alert(test);
+//function test
+</pre>
+<p>并没有出现想象中的undefined。这说明var test并不会覆盖函数声明，test是已经存在的变量，var对于存在的同名变量，就没有作用了。这样就看不出来谁的提升级别高了。既可以是var test提升级别高，function test()覆盖test，也可以是function test()提升级别高，var test不处理test。</p>
+<p>对于这个现象，其实还是根据变量提升的概念来分析，只要记住，只有</p>
+<pre lang='javascript'>
+function test(){
+  ...
+}
+  
+var test; 
+</pre>
+<p>这两种形式才能进行变量提升就行了，其他的赋值等都是在提升后的基础上进行的。</p>
+<p></p>
+<p>另外，做实验最好不要在浏览器的console里做，因为同一个页面不刷新，自己写进去的全局变量、声明都不会消失，会出现混乱的情况。</p>
+</body>
+</html>
