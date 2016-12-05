@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>bind、call、apply、this、var实验.md</title></head>
+<body><h1>bind、call、apply、this、var实验</h1>
+<hr />
+<h2>bind、call、apply</h2>
+<p>bind与call、apply作用差不多，但是用法有一点不一样。根据MDN的介绍：</p>
+<blockquote><p>The <strong><code>bind()</code></strong> method creates a new function that, when called, has its <code>this</code> keyword set to the provided value, with a given sequence of arguments preceding any provided when the new function is called.</p>
+</blockquote>
+<p>bind能<strong>新建</strong>一个函数。来看代码：</p>
+<pre lang='javascript'>
+var name1 = &#39;window scope&#39;
+
+function test(){
+var name1 = &#39;i am the test, only I can console.log()&#39;
+console.log(this.name1)
+}
+
+function a(){
+var name1 = &#39;a str in a function&#39;
+}
+
+var b = new a();
+b.name1=&#39;obj from new func&#39;;
+
+var c ={
+name1 :&#39;a str in an obj&#39;
+}
+
+test();
+//window scope
+
+test.bind(a)();
+test.bind(b)();
+test.bind(c)();
+
+test.call(a);
+test.call(b);
+test.call(c);
+
+test.apply(a);
+test.apply(b);
+test.apply(c);
+
+//undefined
+//obj from new func
+//a str in an obj
+</pre>
+<p>三种方式结果都是一样的，区别在于bind后是一个新的函数，要用<code>()</code>符调用；另外一点，三者的参数需要是一个<strong>对象</strong>，对于函数<code>function a()</code>的bind、call、apply均为undefined可以看出这一点。</p>
+<p>这里用<code>name1</code>作变量名是因为虽然<code>name</code>不是JAVASCRIPT的保留字，可以使用，但在这段代码中，若使用<code>console.log(this.name)</code>，<code>test.bind(a)()</code>的输出将不再是undefined，而变成函数的名字，也就是<code>a</code>。</p>
+<h2>this、var</h2>
+<p>我尝试了三种定义变量的方式</p>
+<pre lang='javascript'>
+var str = &#39;test1&#39;;
+this.str = &#39;test2&#39;;
+str = &#39;test3&#39;;
+
+console.log(str);		//test3
+console.log(this.str);	//test3
+</pre>
+<p>在全局作用域下，没有区别，都应该是对window.test的声明。</p>
+<p>当来到函数声明内部时，就有一点不同了。</p>
+<pre lang='javascript'>
+function test(){
+  var str = &#39;var test&#39;;
+  this.str = &#39;this.test&#39;;  
+  
+  console.log(&#39;func str: &#39;,str);			//var test
+  console.log(&#39;func this.str: &#39;,this.str);	//this.test
+}
+test();
+</pre>
+<p>可以看到，当函数内部有变量声明时，<code>console.log(str)</code>输出时，先会在函数内部作用域找这个变量，如果找到，就输出。</p>
+<p>而<code>console.log(this.str)</code>，由于this的作用，先会在全局作用域寻找str，在这段代码中全局作用域没有str的声明，所以创建了str，然后赋值为<code>this.test</code>。</p>
+<p>但是如果将<code>this.str = &#39;this.test&#39;</code>改为<code>str = &#39;this.test&#39;;</code> ，失去了this关键词的作用，就会先在函数内部作用域寻找，如果找不到，才会去全局作用域作用。看下面修改过的代码：</p>
+<pre lang='javascript'>
+var str=&#39;window scope&#39;;
+
+function test(){
+  var str = &#39;var test&#39;;
+  this.str = &#39;this.test&#39;;  
+  str = &#39;test changed&#39;;
+  
+  console.log(&#39;func str: &#39;,str);
+  console.log(&#39;func this.str: &#39;,this.str);
+}
+test();
+
+console.log(str);
+console.log(this.str);
+
+//func str:  test changed
+//func this.str:  this.test
+//this.test
+//this.test
+</pre>
+<p><code>str = &#39;test changed&#39;</code>只对函数内部变量起了作用。</p>
+<p><code>this.str = &#39;this.test&#39;</code>修改了全局变量<code>var str=&#39;window scope&#39;</code>。</p>
+<p></p>
+<p>之前由于不太对这种基础概念熟悉，总会由于小的理解缺失导致走进逻辑死胡同，今天把这些概念分解开来逐步验证，加深一下理解。</p>
+</body>
+</html>
