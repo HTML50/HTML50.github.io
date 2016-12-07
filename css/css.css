@@ -23,7 +23,7 @@ a:hover{text-shadow:1px 5px 20px #000}
 .container{margin:0 auto;width:80%}
 .divider{height:5px;background:#eeedf0;width:60%;margin:10px auto}
 .navigation{margin:50px auto}
-.list-flex{display:flex;flex-direction:column-reverse;justify-content:center}
+.list-flex{display:flex;flex-direction:column-reverse;justify-content:center;text-indent:0}
 .item{display:flex;justify-content:center}
 .left-box{text-align:right;width:40%}
 .item-img img{width:200px}
