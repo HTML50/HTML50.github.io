@@ -23,9 +23,9 @@ a:hover{text-shadow:1px 5px 20px #000}
 .container{margin:0 auto;width:80%}
 .divider{height:5px;background:#eeedf0;width:60%;margin:10px auto}
 .navigation{margin:50px auto}
-.list-flex{display:flex;flex-direction:column-reverse;justify-content:center;text-indent:0}
+.list-flex{display:flex;flex-direction:column-reverse;text-indent:0}
 .item{display:flex;justify-content:center}
-.left-box{text-align:right;width:40%}
+.left-box{width:40%;display:flex;align-items:center;justify-content:flex-end;}
 .item-img img{width:200px}
 .item-title{font-size:1.5em}
 .item-date{font-size:.8em}
