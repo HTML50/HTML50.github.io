@@ -11,7 +11,7 @@ echo ^<!-----------------item-----------------^>
 echo=
 echo ^<div class='divider'^>^</div^>
 echo=
-echo ^<a href='javascript:makeRequest^("./blog/%file%",1^)'^>
+echo ^<a href='javascript:makeRequest^("./blog/%file%",1^)' target='_self'^>
 echo ^<div class='item'^>
 echo=
 echo ^<div class='left-box'^>
