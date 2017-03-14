@@ -26,7 +26,7 @@ var analyser = context.createAnalyser();
 source.connect(analyser);
 analyser.connect(context.destination);
 </pre>
-<p>这里先创建一个audio容器，载入音频文件hello.mp4。可以这样理解，source获取hello.mp4的内容节点，analyser是为可视化做准备的频谱分析器，destination是电脑上的声卡。连接后，音频节点先通过分析器，然后传到声卡。</p>
+<p>这里先创建一个audio容器，载入音频文件hello.mp4。可以这样理解，<code>source</code>获取hello.mp4的内容节点，<code>analyser</code>是为可视化做准备的频谱分析器，<code>destination</code>是电脑上的声卡。连接后，音频节点先通过分析器，然后传到声卡。</p>
 <p></p>
 <pre lang='javascript'>
 analyser.fftSize = 4096;
@@ -40,23 +40,23 @@ var dataArray = new Uint8Array(length);
 <p><strong>可视化：音频数据的canvas绘制</strong></p>
 <p>大家应该都见过，频谱就是类似下面这个图片的样子（波形和频谱是不同的概念）。</p>
 <p><img src='time.jpg' title='频谱图' /></p>
-<p>我们已经在dataArray数组中获取到了音频数据，数据的内容是大小不同的数值，分布在数组下标从0到dataArray.length的项内。</p>
-<p><a href='https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/getByteFrequencyData'>MDN上面</a>给出的例子，就是直接把数据以方块的形式绘制出来，比如dataArray[0]的值为128，那么就在画布横坐标0的地方画上128个方块。</p>
+<p>我们已经在<code>dataArray</code>数组中获取到了音频数据，数据的内容是大小不同的数值，分布在数组小标从<code>0</code>到<code>dataArray.length</code>的各数组项内。</p>
+<p><a href='https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/getByteFrequencyData'>MDN上面</a>给出的例子，就是直接把数据以方块的形式绘制出来，比如<code>dataArray[0]</code>的值为128，那么就在画布横坐标0的地方画上128个方块。</p>
 <p>明白了这个对应关系，画图就变得简单了。</p>
 <p>我先使用线条绘制图形，然后填充，得到了频谱的主体。</p>
 <p>在主体的基础上，再用类似的方法绘制一层线条，不填充，并加入随机变量、高度向上平移一些，得到高出主体的线条。</p>
 <p>倒影刚开始我想用主体反转变形的方法，发现对图片的反转模糊很简单，图形太复杂。于是我又仿照主体图形的代码，写了一个反转的，高度收缩的倒影。</p>
 <p>最后将所有的图形加上渐变填充，就变的色彩鲜明了。</p>
 <p>背景变化的黑白光圈是一个中心辐射型的黑白填充，使用随机变量来确定辐射的半径。</p>
-<p>到此，完成了所有canvas的动画部分，这些内容全部放到一个需要requestAnimationFrame()重复执行的块内。</p>
+<p>到此，完成了所有canvas的动画部分，这些内容全部放到一个需要<code>requestAnimationFrame()</code>重复执行的块内。</p>
 <p></p>
 <p><strong>文字部分：CSS动画很方便</strong></p>
 <p>绘制完动画后，同样使用canvas绘制开场的文字动画，发现太复杂：文字的滚动，擦除已经很麻烦了，还需要设计颜色样式。决定放弃canvas动画，转用CSS3动画，使用绝对定位，写几个相对坐标改变的动画就搞定了。</p>
-<p>文字的倒影是一个绿色填充圆角div，加上阴影。</p>
+<p>文字的倒影是一个绿色填充圆角DIV，加上阴影。</p>
 <p></p>
 <p><strong>优化</strong></p>
 <p>所有工作完成后，发现不同分辨率下显示有问题，我的分辨率是1366*768，到更高的分辨率下就无法全屏显示了。</p>
-<p>刚开始我想重新计算图形，使用自适应屏幕大小的方法。发现太复杂，要计算的东西很多。想了想，决定使用对body的transform scale来拉伸整个页面：先计算当前分辨率与1366 768的比例，然后拉伸成不同比例。这样挺简单的。</p>
+<p>刚开始我想重新计算图形，使用自适应屏幕大小的方法。发现太复杂，要计算的东西很多。想了想，决定使用对<code>body</code>的<code>transform:scale(x,y)</code>来拉伸整个页面：先计算当前分辨率与1366 768的比例，然后拉伸成不同比例。这样挺简单的。</p>
 <p></p>
 <h2>总结</h2>
 <p>之前做过html5小游戏，加上这个音频可视化，两次使用canvas的感觉都是再跟数学打交道，全是坐标计算方面的工作。计算准确数值，画图什么的还是很简单的，都是基本绘制语句。看来以后还需要多学习数学呵~</p>
@@ -69,10 +69,10 @@ var dataArray = new Uint8Array(length);
 <p>我一直都是在一个js副件内写代码的，最终定稿后，一个利索的操作把副件删除了，干净的html和js，等待上传github。传完打开，index.html提示找不到<code>副件.js</code>，瞬间意识到删错了东西，打开js一看，里面就几行代码。当时心里是崩溃的。学了一下午文件恢复，winhex始终找不到文件的位置。最终在chrome的缓存中取出了js的16进制原始文档。</p>
 <p></p>
 <p><strong>写代码时遇到的一些问题</strong></p>
-<p>波形图 getByteTimeDomainData ，频谱图 getByteFrequencyData 是两种形式的数据。我刚开始使用的是波形图，想做成频谱图的样子真是费了巨大的功夫，想了很多算法把波形图的数据转化成频谱图，无疾而终。</p>
-<p>波形图，dataArray中最大值为256,最小值为0，初始值为128。频谱图初始值为0，只有比0大的值。</p>
+<p>波形图 <code>getByteTimeDomainData</code>和频谱图 <code>getByteFrequencyData</code> 是两种形式的数据。我刚开始使用的是波形图，想做成频谱图的样子真是费了巨大的功夫，想了很多算法把波形图的数据转化成频谱图，无疾而终。</p>
+<p>波形图，<code>dataArray</code>中最大值为256,最小值为0，初始值为128。频谱图初始值为0，只有比0大的值。</p>
 <p></p>
-<p>不同长度的数组dataArray console.log出来，内容有时相同，有时不同？</p>
+<p>不同长度的数组<code>dataArray</code> <code>console.log</code>出来，内容有时相同，有时不同？</p>
 <p>数组很大时，将analyser的实时数据装入数组，log操作很费时，导致log之后下一个短数组装入数据时，实时数据发生了变化。</p>
 <p></p>
 <p>canvas有多层画布时，是有先后顺序的，如果想要透明前面的层。除了要设定透明度外，必须给canvas加上一个z-index。</p>
