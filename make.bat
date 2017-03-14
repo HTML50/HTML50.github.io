@@ -1,13 +1,21 @@
-::æ ¹æ®æœ€æ–°æ–‡æ¡£ï¼Œè‡ªåŠ¨ç”Ÿæˆhtmlï¼Œå¹¶æ›´æ–°ä¸Šä¼  
+::¸ù¾İ×îĞÂÎÄµµ£¬×Ô¶¯Éú³Éhtml£¬²¢¸üĞÂÉÏ´« 
 chcp 65001
 @echo off
+setlocal enabledelayedexpansion
 set memo=%1
-if {%memo%}=={} set memo=æ–‡ç« å¿˜å†™æ¦‚è¿°æ ‡é¢˜äº†
+if {%memo%}=={} (
+echo= 
+set /p memo=ÊäÈëÎÄÕÂ±êÌâ: 
+if {!memo!}=={} set memo=ÎÄÕÂÍüĞ´¸ÅÊö±êÌâÁË
+) else (
+set memo=%1
+)
+
 FOR /F %%I IN ('DIR /B /OD /TC list-img') DO set img=%%I
 FOR /F %%I IN ('DIR /B /OD /TC blog') DO set file=%%I
 (
 echo=
-echo ^<!-----------------item-----------------^>
+echo ^<^^!-----------------item-----------------^>
 echo=
 echo ^<div class='divider'^>^</div^>
 echo=
@@ -37,4 +45,4 @@ echo ^</a^>
 )>>list.html
 chcp 936
 mode con cols=130 lines=230
-echo ç”ŸæˆHTMLå®Œæ¯•ï¼
+echo Éú³ÉHTMLÍê±Ï£¡
