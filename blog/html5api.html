@@ -39,7 +39,7 @@ var dataArray = new Uint8Array(length);
 <p></p>
 <p><strong>可视化：音频数据的canvas绘制</strong></p>
 <p>大家应该都见过，频谱就是类似下面这个图片的样子（波形和频谱是不同的概念）。</p>
-<p><img src='timg.jpg' alt='频谱图' /></p>
+<p><img src='time.jpg' alt='频谱图' /></p>
 <p>我们已经在dataArray数组中获取到了音频数据，数据的内容就是大小不同是数值，分布在数组小标从0到数组长度的项内。</p>
 <p><a href='https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/getByteFrequencyData'>MDN上面</a>给出的例子，就是直接把数据以方块的形式绘制出来，比如dataArray[0]的值为128，那么就在画布横坐标0的地方画上128个方块。</p>
 <p>明白了这个对应关系，画图就变得简单了。</p>
