@@ -22,7 +22,7 @@ echo ^</div^>
 echo=
 echo ^<div class='right-box'^>
 echo ^<div class='item-title'^>
-FOR /F "tokens=2 delims=</h1>" %%I IN ('findstr /i /r "<body><h1>.*</h1>" .\blog\%file%') DO echo %%I
+FOR /F "tokens=3 delims=<>" %%I IN ('findstr /i /r "<body><h1>.*</h1>" .\blog\%file%') DO echo %%I
 echo ^</div^>
 echo ^<div class='item-date'^>
 echo %date:~0,4%-%date:~5,2%-%date:~8,2%
