@@ -32,15 +32,17 @@ a:hover{text-shadow:1px 5px 20px #000}
 .right-box{padding:20px;width:60%}
 #list{line-height:2;width:70%;margin:auto;text-indent:2em;color:#2b2828;background:#fff;padding:2em;box-shadow:1px 1px 15px rgba(0,0,0,.29);margin-bottom:5%;transition:height 3s}
 #list a{color:#000}
+#list li{text-align: center;list-style-type: none;}
+#list li a{color:#268246;}
 #list p>a{color:#36af6d}
 #list h1,code,h2,h3,pre,strong{text-align:center;margin-bottom:1.2em;text-indent:0}
 #list h1{font-size:2em}
 #list h1:nth-child(1){font-size:2.5em;margin:auto}
 #list hr{width:80%;height:2px;background:#eeedf0;margin:20px auto}
-#list code,pre{font-family:Consolas,Menlo,Monaco,monospace,serif;font-size:.8em;background:#fff;color:#393434}
-#list code{border:1px solid #ddd;padding:6px;margin:auto 5px}
+#list code,pre{font-family:Consolas,Menlo,Monaco,monospace,serif;font-size:.8em;color:#393434}
+#list code{border:1px solid #ddd;padding:6px;margin:auto 5px;color: #d25050;}
 #list blockquote{padding:1.33em;font-style:italic;border-left:5px solid #7a7a7a;color:#555;margin-left:2em}
-#list pre{margin:1em auto;padding-left:1em;border:1px solid #ddd;padding-bottom:8px;padding-top:6px;margin-bottom:1.5em;display:block;break-inside:avoid;text-align:left;white-space:pre-wrap;background:rgba(204,204,204,.17);width:90%}
+#list pre{margin:1em auto;padding-left:1em;border:1px solid #ddd;padding-bottom:8px;padding-top:6px;margin-bottom:1.5em;display:block;break-inside:avoid;text-align:left;white-space:pre-wrap;background:#f6f6f6;width:90%}
 #list h2::after{border-bottom-width:3px;border-bottom-style:solid;border-bottom-color:#2f2f2f;content:"";width:100px;display:block;margin:0 auto;height:1px}
 #list ol{list-style-position:inside}
 .footer{margin-top:10%;text-align:center;background:url(../img/pattern.svg);background-size:cover;width:100%;height:250px;font-size:.8em;color:#234b38}
