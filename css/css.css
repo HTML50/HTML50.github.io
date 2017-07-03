@@ -27,7 +27,7 @@ a:hover{text-shadow:1px 5px 20px #000}
 .item{display:flex;justify-content:center}
 .left-box{width:40%;display:flex;align-items:center;justify-content:flex-end;}
 .item-img img{width:200px}
-.item-title{font-size:1.5em}
+.item-title{font-size:1.5em;word-break: break-word;}
 .item-date{font-size:.8em}
 .right-box{padding:20px;width:60%}
 #list{line-height:2;width:70%;margin:auto;text-indent:2em;color:#2b2828;background:#fff;padding:2em;box-shadow:1px 1px 15px rgba(0,0,0,.29);margin-bottom:5%;transition:height 3s}
