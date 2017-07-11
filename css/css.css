@@ -37,7 +37,7 @@ a:hover{text-shadow:1px 5px 20px #000}
 #list p>a{color:#36af6d}
 #list h1,code,h2,h3,pre,strong{text-align:center;margin-bottom:1.2em;text-indent:0}
 #list h1{font-size:2em}
-#list h1:nth-child(1){font-size:2.5em;margin:auto}
+#list h1:nth-child(1){font-size:2.5em;margin:auto;word-break: break-all;}
 #list hr{width:80%;height:2px;background:#eeedf0;margin:20px auto}
 #list code,pre{font-family:Consolas,Menlo,Monaco,monospace,serif;font-size:.8em;color:#393434}
 #list code{border:1px solid #ddd;padding:6px;margin:auto 5px;color: #d25050;}
