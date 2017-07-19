@@ -83,21 +83,26 @@ function alertContents() {
 
 			if (flag == 1) {
 				ajaxSource = ajaxSource.replace(/<!doctype html>[\s\S|\.]*<body>/, '');
-				flag = null;
 			}
-
+      
 			document.getElementById('list').innerHTML = ajaxSource;
+      if (flag == 1) {
+        var nodes = document.getElementsByTagName('pre');
+        for(let i=0;i<nodes.length;i++){
+          hljs.highlightBlock(nodes[i]);
+        }
+      }
+      
 			document.getElementById('list').classList.remove('fadeOutDown');
 			document.getElementById('list').classList.add('fadeInUp');
 			document.getElementById('spinner').style.display = 'none';
 			setTimeout(function() {
 				document.getElementById('list').style.height = '';
 			}, 1000)
-			if (flag == 0) {
-				flag = null;
-			} else {
+			if (flag != 0) {
 				smoothMove(520);
 			}
+      flag = null;
 		}
 	}
 }
