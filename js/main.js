@@ -4,8 +4,12 @@ var httpRequest, id, flag = 0;
 //1: blog page
 //2: other page
 
-
-makeRequest('list.html')
+if(location.hash == ''){
+	makeRequest('list.html')
+}else{
+	flag=1;
+	makeRequest(location.hash.slice(1));
+}
 //open index.html and load list.html, with flag=0, means no auto scroll roll
 FSS("header", "dynamic-background");
 //generate the header animation
