@@ -9,16 +9,20 @@
 <button id="btn">提交</button>
 
 <script>
- var xhr = new XMLHttpRequest();
+if(location.search.slice(6)!=''){
+	var code = location.search.slice(6);
+}
 
-        btn.addEventListener("click", function(){
+
+
+
+
+var xhr = new XMLHttpRequest();
+btn.addEventListener("click", function(){
         xhr.open('POST','https://github.com/login/oauth/access_token',true);
-
-
-    var payload = JSON.stringify({"client_id":"6b7bddd539a442d637fa","client_secret":"0e315e5565ddfca6a63faf1c9bd8f7863f7a09c7","code":"8d438be27f8c3de83244"});
-    console.log(payload)
-    xhr.send(payload);
-
-        })
+	    var payload = JSON.stringify({"client_id":"6b7bddd539a442d637fa","client_secret":"0e315e5565ddfca6a63faf1c9bd8f7863f7a09c7","code":code});
+	    console.log(payload)
+   		 xhr.send(payload);
+})
 </script>
 <!---------------------------------------------list------------------------------------------------------------------>
