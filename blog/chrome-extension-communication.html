@@ -19,7 +19,7 @@
 <h2>不同页面间的通讯方式</h2>
 <h3>popup到content-scirpts</h3>
 <p><strong>popup页面发送：</strong></p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre lang='javascript'>
 chrome.tabs.query({}, function(tabs) {
   for (var i = 0; i &lt; tabs.length; i++) {
     chrome.tabs.sendMessage(tabs[i].id, { flag: &#39;true&#39; },function(response) {
@@ -27,11 +27,11 @@ chrome.tabs.query({}, function(tabs) {
     });
   }
 });
-</code></pre>
+ </pre>
 <p>这里使用的是for循环向所有打开的页面发送消息。也可以指定窗口，具体详见<code>chrome.tabs</code>使用方法。</p>
 <p></p>
 <p><strong>content-scripts接收：</strong></p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre lang='javascript'>
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if (request.flag !== undefined) {
@@ -39,26 +39,26 @@ chrome.runtime.onMessage.addListener(
       sendResponse({ param: &quot;flag msg recieved&quot;});
     }
   });
-</code></pre>
+ </pre>
 <p></p>
 <p>需要注意的是，使用<code>chrome.tabs</code>需要在<code>manifest.json</code>文件中增加tabs权限。</p>
-<pre><code>
+<pre>
   &quot;permissions&quot;: [
     &quot;tabs&quot;
   ]
-</code></pre>
+ </pre>
 <p></p>
 <p><strong>应用：</strong>单击popup中的划词搜索，开启在任意页面上的划词功能。</p>
 <p>单击时会执行<code>chrome.tabs</code>向所有页面发送一条开启或关闭的消息，页面接收后改变划词是否开启的状态。</p>
 <p></p>
 <h3><strong>content-scripts到popup</strong></h3>
 <p><strong>content-script发送：</strong></p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre lang='javascript'>
 var port = chrome.runtime.connect({ name: &quot;dict&quot; });
 port.postMessage({ height: windowHeight });
-</code></pre>
+ </pre>
 <p><strong>popup接收：</strong></p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre lang='javascript'>
 var port = chrome.runtime.connect({ name: &quot;dict&quot; });
 chrome.runtime.onConnect.addListener(function(port) {
   console.assert(port.name == &quot;dict&quot;);
@@ -68,7 +68,7 @@ chrome.runtime.onConnect.addListener(function(port) {
     }
   });
 });
-</code></pre>
+ </pre>
 <p><strong>应用：</strong>在popup页面中查询一个单词后，content-scirpt注入到相应的网页取得查询结果的高度，返回给popup页面设置查询结果的高度。</p>
 <p></p>
 <h3>background作为媒介，连接popup与content-scripts</h3>
@@ -76,15 +76,15 @@ chrome.runtime.onConnect.addListener(function(port) {
 <p>一般情况不主动推送消息，只对消息进行被动反馈。</p>
 <p></p>
 <p><strong>popup与content-scirpts发送消息：</strong></p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre lang='javascript'>
 chrome.runtime.sendMessage({ get: &quot;height&quot; }, function(response) {
 
   var callback = response.param;
   console.log(&quot;get response from background: &quot; + callback);
 });
-</code></pre>
-<p>**background接收并返回：</p>
-<pre><code class='language-javascript' lang='javascript'>
+ </pre>
+<p><strong>background接收并返回：</strong></p>
+<pre lang='javascript'>
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if(request.get == &#39;height&#39;){
@@ -93,20 +93,20 @@ chrome.runtime.onMessage.addListener(
       //也可以没有返回，比如需要设置background中的状态
     }
   });
-</code></pre>
+ </pre>
 <p><strong>应用：</strong></p>
 <p>打开一个新页面时，content-scripts向background查询当前的划词搜索状态，进行当前页面的初始化；popup页面设置划词搜索状态，并向background发送设置信息，将状态保存在background中。</p>
 <p></p>
 <h3>popup通过<code>getBackgroundPage</code>直接调用background变量</h3>
 <p>在popup页面中，可以直接通过<code>chrome.runtime.getBackgroundPage</code>对bakcground进行变量的获取：</p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre lang='javascript'>
 chrome.runtime.getBackgroundPage(function(w) {
   isDragSearch = w.isDragSearch;
   if (isDragSearch) {
     console.log(&#39;dragSearch is available&#39;)
   }
 });
-</code></pre>
+ </pre>
 <p></p>
 <h2>总结</h2>
 <p>这是我在写扩展时用混合使用的几种通讯方式，完成了dict不同的通讯需求。但是根据不同的情况应该还有其他的方式，这里总结的不一定很全。</p>

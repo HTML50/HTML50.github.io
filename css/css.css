@@ -23,13 +23,7 @@ a:hover{text-shadow:1px 5px 20px #000}
 .container{margin:0 auto;width:80%}
 .divider{height:5px;background:#eeedf0;width:60%;margin:10px auto}
 .navigation{margin:50px auto}
-.list-flex{display:flex;flex-direction:column-reverse;text-indent:0}
-.item{display:flex;justify-content:center}
-.left-box{width:40%;display:flex;align-items:center;justify-content:flex-end;}
-.item-img img{width:200px}
-.item-title{font-size:1.5em;word-break: break-word;}
-.item-date{font-size:.8em}
-.right-box{padding:20px;width:60%}
+
 #list{line-height:2;width:70%;margin:auto;text-indent:2em;color:#2b2828;background:#fff;padding:2em;box-shadow:1px 1px 15px rgba(0,0,0,.29);margin-bottom:5%;transition:height 3s}
 #list a{color:#000}
 #list li{text-align: center;list-style-type: none;}
@@ -45,6 +39,15 @@ a:hover{text-shadow:1px 5px 20px #000}
 #list pre{margin:1em auto;padding-left:1em;padding-bottom:8px;padding-top:6px;margin-bottom:1.5em;display:block;break-inside:avoid;text-align:left;white-space:pre-wrap;background:#f6f6f6;width:90%}
 #list h2::after{border-bottom-width:3px;border-bottom-style:solid;border-bottom-color:#2f2f2f;content:"";width:100px;display:block;margin:0 auto;height:1px}
 #list ol{list-style-position:inside}
+#list p img{width: 90%;margin: 1rem auto;display: block;}
+.list-flex{display:flex;flex-direction:column-reverse;text-indent:0}
+.item{display:flex;justify-content:center}
+.left-box{width:40%;display:flex;align-items:center;justify-content:flex-end;}
+.item-img img{width:200px}
+.item-title{font-size:1.5em;word-break: break-word;}
+.item-date{font-size:.8em}
+.right-box{padding:20px;width:60%}
+
 .footer{margin-top:10%;text-align:center;background:url(../img/pattern.svg);background-size:cover;width:100%;height:250px;font-size:.8em;color:#234b38}
 .footer img{width:30px;filter:grayscale(100%);transition:filter .25s}
 .footer a:hover img{filter:none}
