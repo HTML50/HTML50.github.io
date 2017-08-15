@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>谷歌扩展通讯方式.md</title></head>
+<body><h1>谷歌扩展的通讯方式</h1>
+<p>前段时间写了一个英文字典的扩展<a href='https://github.com/HTML50/dict'>dict</a>，学习了不同页面间的通讯方式，以<a href='https://github.com/HTML50/dict'>dict</a>为例子，总结一下这几种不同的方式。</p>
+<p></p>
+<h2>扩展通讯页面的类型</h2>
+<p>扩展页面一共有三大类：popup，content-scripts和background。</p>
+<p>一般情况下，需要持续使用的变量存在background页面中，该页面自浏览器打开一直留在内存中。popup和content-scripts页面随着打开关闭会释放相应的内存。</p>
+<p><strong>Popup</strong>页面，扩展图标直接点击出现的页面。</p>
+<p><img src='./1.png' alt='popup页面' /></p>
+<p></p>
+<p> <strong>Background</strong>页面，浏览器启动后即运行的页面，适合存储扩展的状态变量，可以用作通讯的桥梁。在扩展设置中可以在<code>Inspect views</code>的<code>background page</code>中查看。</p>
+<p><img src='./2.png' alt='background' /></p>
+<p><strong>Content-scripts</strong>，注入到特定页面中的js。</p>
+<p></p>
+<h2>不同页面间的通讯方式</h2>
+<h3>popup到content-scirpts</h3>
+<p><strong>popup页面发送：</strong></p>
+<pre><code class='language-javascript' lang='javascript'>
+chrome.tabs.query({}, function(tabs) {
+  for (var i = 0; i &lt; tabs.length; i++) {
+    chrome.tabs.sendMessage(tabs[i].id, { flag: &#39;true&#39; },function(response) {
+      console.log(response.param);
+    });
+  }
+});
+</code></pre>
+<p>这里使用的是for循环向所有打开的页面发送消息。也可以指定窗口，具体详见<code>chrome.tabs</code>使用方法。</p>
+<p></p>
+<p><strong>content-scripts接收：</strong></p>
+<pre><code class='language-javascript' lang='javascript'>
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.flag !== undefined) {
+      console.log(request.flag)
+      sendResponse({ param: &quot;flag msg recieved&quot;});
+    }
+  });
+</code></pre>
+<p></p>
+<p>需要注意的是，使用<code>chrome.tabs</code>需要在<code>manifest.json</code>文件中增加tabs权限。</p>
+<pre><code>
+  &quot;permissions&quot;: [
+    &quot;tabs&quot;
+  ]
+</code></pre>
+<p></p>
+<p><strong>应用：</strong>单击popup中的划词搜索，开启在任意页面上的划词功能。</p>
+<p>单击时会执行<code>chrome.tabs</code>向所有页面发送一条开启或关闭的消息，页面接收后改变划词是否开启的状态。</p>
+<p></p>
+<h3><strong>content-scripts到popup</strong></h3>
+<p><strong>content-script发送：</strong></p>
+<pre><code class='language-javascript' lang='javascript'>
+var port = chrome.runtime.connect({ name: &quot;dict&quot; });
+port.postMessage({ height: windowHeight });
+</code></pre>
+<p><strong>popup接收：</strong></p>
+<pre><code class='language-javascript' lang='javascript'>
+var port = chrome.runtime.connect({ name: &quot;dict&quot; });
+chrome.runtime.onConnect.addListener(function(port) {
+  console.assert(port.name == &quot;dict&quot;);
+  port.onMessage.addListener(function(msg) {
+    if (msg.height) {
+      console.log(&#39;msg recieved&#39;);
+    }
+  });
+});
+</code></pre>
+<p><strong>应用：</strong>在popup页面中查询一个单词后，content-scirpt注入到相应的网页取得查询结果的高度，返回给popup页面设置查询结果的高度。</p>
+<p></p>
+<h3>background作为媒介，连接popup与content-scripts</h3>
+<p>background使用<code>chrome.runtime.onMessage</code>监听来自<code>popup</code>与<code>content-scripts</code>的请求，返回所需要的值。</p>
+<p>一般情况不主动推送消息，只对消息进行被动反馈。</p>
+<p></p>
+<p><strong>popup与content-scirpts发送消息：</strong></p>
+<pre><code class='language-javascript' lang='javascript'>
+chrome.runtime.sendMessage({ get: &quot;height&quot; }, function(response) {
+
+  var callback = response.param;
+  console.log(&quot;get response from background: &quot; + callback);
+});
+</code></pre>
+<p>**background接收并返回：</p>
+<pre><code class='language-javascript' lang='javascript'>
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if(request.get == &#39;height&#39;){
+      console.log(&quot;require height from content-scripts or popup&quot;)
+      sendResponse({param: 300});
+      //也可以没有返回，比如需要设置background中的状态
+    }
+  });
+</code></pre>
+<p><strong>应用：</strong></p>
+<p>打开一个新页面时，content-scripts向background查询当前的划词搜索状态，进行当前页面的初始化；popup页面设置划词搜索状态，并向background发送设置信息，将状态保存在background中。</p>
+<p></p>
+<h3>popup通过<code>getBackgroundPage</code>直接调用background变量</h3>
+<p>在popup页面中，可以直接通过<code>chrome.runtime.getBackgroundPage</code>对bakcground进行变量的获取：</p>
+<pre><code class='language-javascript' lang='javascript'>
+chrome.runtime.getBackgroundPage(function(w) {
+  isDragSearch = w.isDragSearch;
+  if (isDragSearch) {
+    console.log(&#39;dragSearch is available&#39;)
+  }
+});
+</code></pre>
+<p></p>
+<h2>总结</h2>
+<p>这是我在写扩展时用混合使用的几种通讯方式，完成了dict不同的通讯需求。但是根据不同的情况应该还有其他的方式，这里总结的不一定很全。</p>
+<p>因为遇到问题时搜索的内容有很多过时的和不太详细的，自己出于复习与总结的目的，写了这个文章。</p>
+<p></p>
+</body>
+</html>
