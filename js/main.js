@@ -91,8 +91,8 @@ function alertContents() {
       
 			document.getElementById('list').innerHTML = ajaxSource;
       if (flag == 1) {
-        var nodes = document.getElementsByTagName('pre');
-        for(let i=0;i<nodes.length;i++){
+        var nodes = document.getElementsByTagName('pre'),i=0;
+        for(;i<nodes.length;i++){
           hljs.highlightBlock(nodes[i]);
         }
       }
