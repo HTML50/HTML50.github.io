@@ -26,7 +26,7 @@ a:hover{text-shadow:1px 5px 20px #000}
 
 #list{line-height:2;width:70%;margin:auto;text-indent:2em;color:#2b2828;background:#fff;padding:2em;box-shadow:1px 1px 15px rgba(0,0,0,.29);margin-bottom:5%;transition:height 3s}
 #list a{color:#000}
-#list li{text-align: center;list-style-type: none;}
+#list ul li{text-align: center;list-style-type: none;}
 #list li a{color:#268246;}
 #list p>a{color:#36af6d}
 #list h1,code,h2,h3,pre,strong{text-align:center;margin-bottom:1.2em;text-indent:0}
