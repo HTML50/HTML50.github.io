@@ -82,3 +82,22 @@ a:hover{text-shadow:1px 5px 20px #000}
 ::-webkit-scrollbar-thumb{background-color:#93b9a5}
 ::-webkit-scrollbar-thumb:hover{background-color:#ffe}
 ::-webkit-scrollbar-thumb:active{background-color:#ffe}
+
+@media screen and (max-width: 500px) {
+    #header{
+    	zoom: 0.7;
+    }
+  	section#list {
+  		font-size: 14px;
+  		width: auto;
+  	}
+  	section#list img {
+    width: 5rem;
+}
+.left-box {
+	width: auto;
+}
+.divider{
+	height: 2px;
+}
+}
