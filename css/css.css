@@ -5,7 +5,7 @@ body ::selection{color:#fcfcfd;background:#36af6d}
 a{text-decoration:none;transition:text-shadow .25s}
 a:hover{text-shadow:1px 5px 20px #000}
 .ab-center{position:absolute;top:0;left:0;bottom:0;right:0;margin:auto}
-.fixed-nav{position:fixed;bottom:5%;right:4%}
+.fixed-nav{position:fixed;bottom:5%;right:4%;z-index: 999;}
 .fixed-nav img{height:25px}
 .fixed-nav a{display:block;border-radius:25px;height:25px;background:#fff;box-shadow:1px 1px 9px rgba(0,0,0,.33);padding:10px;margin:10px;opacity:.3}
 .fixed-nav a:hover{box-shadow:1px 1px 15px rgba(0,0,0,.33);opacity:1}
@@ -93,11 +93,17 @@ a:hover{text-shadow:1px 5px 20px #000}
   	}
   	section#list img {
     width: 5rem;
+    }
+    .left-box {
+      width: auto;
+    }    
+    .right-box {
+    	font-size: 0.6rem;
+    }
+    .item-title {
+    font-size: 1em;
 }
-.left-box {
-	width: auto;
-}
-.divider{
-	height: 2px;
-}
+    .divider{
+    	height: 2px;
+    }
 }

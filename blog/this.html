@@ -57,7 +57,7 @@ var str = &#39;test1&#39;;
 this.str = &#39;test2&#39;;
 str = &#39;test3&#39;;
 
-console.log(str);		//test3
+console.log(str);	//test3
 console.log(this.str);	//test3
 </pre>
 <p>在全局作用域下，没有区别，都应该是对window.test的声明。</p>
@@ -67,13 +67,13 @@ function test(){
   var str = &#39;var test&#39;;
   this.str = &#39;this.test&#39;;  
   
-  console.log(&#39;func str: &#39;,str);			//var test
+  console.log(&#39;func str: &#39;,str);		//var test
   console.log(&#39;func this.str: &#39;,this.str);	//this.test
 }
 test();
 </pre>
-<p>可以看到，当函数内部有变量声明时，<code>console.log(str)</code>输出时，先会在函数内部作用域找这个变量，如果找到，就输出。</p>
-<p>而<code>console.log(this.str)</code>，由于this的作用，先会在全局作用域寻找str，在这段代码中全局作用域没有str的声明，所以创建了str，然后赋值为<code>this.test</code>。</p>
+<p>可以看到，当函数内部有<code>var</code>关键词进行变量声明时，<code>console.log(str)</code>输出时，先会在函数内部作用域找这个变量，如果找到，就输出。</p>
+<p>而<code>console.log(this.str)</code>，由于this在这里指向的是<code>window</code>，会寻找<code>window.str</code>，<code>this.str = 'this.test' </code>已经为 <code>window.test</code>赋值，所会输出<code>this.test</code>。</p>
 <p>但是如果将<code>this.str = &#39;this.test&#39;</code>改为<code>str = &#39;this.test&#39;;</code> ，失去了this关键词的作用，就会先在函数内部作用域寻找，如果找不到，才会去全局作用域作用。看下面修改过的代码：</p>
 <pre lang='javascript'>
 var str=&#39;window scope&#39;;

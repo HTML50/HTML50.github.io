@@ -31,7 +31,10 @@ document.addEventListener("mousewheel", MouseWheelHandler, false);
 document.addEventListener("DOMMouseScroll", MouseWheelHandler, false); //firefox
 
 function MouseWheelHandler(e) {
-	clearInterval(id)
+	if(id){
+		clearInterval(id);
+		id = undefined;
+	}
 	return false;
 }
 
