@@ -22,8 +22,8 @@ if you like, you can clone this repo and have a try.
 
 1. download the zip
 2. wrte a new blog in Typora, and export it into `html` file
-3. put the *.html into this folder `./blog`
-4. execute update.bat (the bat is mainly find the newest html file and put it into the blog list page) and done!
+3. put the *.html into this folder `./blog`, and *.png into `./list-img`
+4. execute update.bat (update.bat mainly finds the newest html file and write it into the blog list page) and done!
 
 
 

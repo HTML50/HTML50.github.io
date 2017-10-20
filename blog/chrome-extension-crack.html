@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>谷歌某插件的激活方法分析.md</title></head>
+<body><h1>谷歌某插件的激活方法分析</h1>
+<p>这几天由于会议的缘故，大部分的过墙软件都不管用了。</p>
+<p>在GITHUB上看见有人推荐了一款谷歌插件，可以使用，但是需要设置360导航为首页才能激活。</p>
+<p>想起来之前的Vysor就是谷歌离线APP，可以通过修改JS破解，这个应该也可以，毕竟所有的逻辑都是JS控制的。</p>
+<p>先在<code>chrome://extensions</code>找到插件的物理路径，打开源文件挨个看一看，<code>bg.js</code>对应的就是background script，经过混淆了，解混淆后，虽然函数名，变量名都成了一个字母，但是结构还原了，可以从中看出来一些逻辑。</p>
+<p>尝试修改了一下JS，谷歌提示插件有可能损坏。只能把文件复制出来，手动载入文件夹安装插件了。</p>
+<p>通读下来，试着修改了几个需要激活地方的代码，如<code>popup</code>，<code>option</code>，只是文字内容变为了已激活，实际上并没有。顺着激活的条件，在<code>bg.js</code>中看到了关键：大概原理就是，插件运行后，会根据是否已经设置360为首页的flag来打开新页面，<code>background</code>会检测当前所有打开的页面中是否包含360的网页来确定是否激活。</p>
+<p>找到<code>localStorage[&quot;auto-homepage&quot;]</code>这里，把打开浏览器时的创建新标签的内容删掉。</p>
+<p>然后找到<code>for(var f=b.length-1;0&lt;=f;f--)g.links.push(b[f].url)</code>这句，这里是把当前所有标签的网址存储到数组内用于检测是否包含360的网址。直接把循环去掉，改成一句<code>g.links.push(&#39;http://123.hao245.com/&#39;)</code>，这样检测时，就无关当前的标签内容，永远检测为真。</p>
+<p>好像还有一个连接12个小时的限制，找到<code>t.onlineTime</code>，把函数内容里的日期增加30天就可以了。</p>
+<p>这样就免除了需要设置360为首页才能激活使用的麻烦。</p>
+<p></p>
+<p>源码下载：<a href="https://raw.githubusercontent.com/HTML50/HTML50.github.io/master/blog/X.7z">X</a></p>
+<p>（解压后拖动X文件夹到扩展管理页面直接安装）</p>
+<p></p>
+</body>
+</html>
