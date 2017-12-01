@@ -3,7 +3,6 @@ var httpRequest, id, flag = 0;
 //0: site open
 //1: blog page
 //2: other page
-//3  
 
 
 //open index.html and load list.html, with flag=0, means no auto scroll roll
@@ -24,17 +23,18 @@ if ('scrollRestoration' in history) {
 
 //watch history's backward and upward
 window.onpopstate = function(event) {
-	if (location.pathname == '/') {
-		makeRequest('list.html');
-	} else {
-		makeRequest(location.pathname);
-	}
+  if (location.pathname == '/' || location.pathname == '/list.html' ) {
+    makeRequest('list.html');
+  } else {
+    console.log(location.pathname)
+    makeRequest(location.pathname,3);
+  }
 };
 
 
 
 function addEvent(){
-	//stop auto scroll when use wheel
+	//add auto scroll when use wheel
 	document.addEventListener("mousewheel", MouseWheelHandler,{passive: true});
 	document.addEventListener("DOMMouseScroll", MouseWheelHandler,{passive: true}); //firefox
 }
@@ -75,9 +75,11 @@ window.addEventListener("keydown", function(e) {
 });
 
 
-//ajax and pushState makes SPA 
+//ajax and pushState 
 function makeRequest(url, num) {
-	if(location.pathname === url){
+	if(location.pathname === url && num !== 3){
+    //num === 3 means request from onpopstate
+
 		smoothMove(520);
 		return;
 	}
@@ -187,7 +189,7 @@ function throttle(func, wait) {
     return function() {
       var now = new Date();
       if (!previous) previous = now;
-      // 计算剩余时间
+      // remaining time
       var remaining = wait - (now - previous);
       context = this;
       args = arguments;
