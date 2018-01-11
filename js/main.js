@@ -95,7 +95,7 @@ function makeRequest(url, num) {
 	document.getElementById('list').classList.add('animation', 'fadeOutDown');
 	httpRequest.onreadystatechange = alertContents;
 
-	//for transition animation
+	//for transition animation duration
 	setTimeout(function() {
 		httpRequest.open('GET', url);
 		httpRequest.send();
@@ -111,7 +111,7 @@ function makeRequest(url, num) {
 
 //ajax
 function alertContents() {
-	if (httpRequest.readyState === XMLHttpRequest.DONE) {
+	if (httpRequest.readyState === 4) {
 		if (httpRequest.status === 200) {
 			var ajaxSource = httpRequest.responseText;
 
