@@ -18,17 +18,33 @@ if you like, you can clone this repo and have a try.
 
 
 
+# How does it work
+
+a bat/bash file to find the newest blog file and thumbnail image, writing  html into list.html, then git push.
+
+
+
 # How to use
 
-1. download the zip
-2. wrte a new blog in Typora, and export it into `html` file
-3. put the *.html into this folder `./blog`, and *.png into `./list-img`
-4. execute update.bat (update.bat mainly finds the newest html file and write it into the blog list page) and done!
+1. clone this repo and git push.
+
+2. wrte a new blog in Typora, export into `html` without styles.
+
+3. put the *.html into folder `./blog`, and new blogs  thumbnail *.png into `./list-img`
+
+4. WINDOWS: (power Shell) `.\update.bat MEMO `
+
+   Linux: `./update MEMO`
+
+5. all be well done if lucky.
+
+
 
 
 
 ## PS
 
-this tool is only work in Windows ( because of I used *.bat for auto update ).
+~~this tool is only work in Windows ( because of I used *.bat for auto update ).~~
 
-If you want to build a site without any frameworks and publish on Github, you can give a try. I feel good about this.
+update a Linux bash. You can keep the file you need and delete the others. (for Windows `make.bat`, `update.bat`, for Linux `update`)
+

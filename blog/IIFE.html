@@ -8,13 +8,13 @@
 <p></p>
 <h2>写法</h2>
 <p>匿名函数立即执行，IIFE (Immediateoly-Invoked Function Expressions)，基本上差不多，都这样：</p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre class='language-javascript' lang='javascript'>
 (function(){
   console.log(&#39;a IIFE ?&#39;)
 })();
 </code></pre>
 <p>写法，还有很多种：</p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre class='language-javascript' lang='javascript'>
 !function(){
   console.log(&#39;a IIFE ?&#39;)
 }();
@@ -34,11 +34,11 @@ void function(){
 (function(){
   console.log(&#39;a IIFE ?&#39;)
 }());
-</code></pre>
+</pre>
 <p></p>
 <h2>分号</h2>
 <p>对于末尾的<code>;</code>分号，最好还是顺手加上，因为如果不加，遇到两个都是用括号<code>()</code>包裹执行的IIFE时，就会遇到问题，比如：</p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre class='language-javascript' lang='javascript'>
 (function(){
   console.log(&#39;a&#39;)
 })()
@@ -46,10 +46,10 @@ void function(){
 (function(){
   console.log(&#39;b&#39;)
 })()
-</code></pre>
+</pre>
 <p>只有<code>a</code>可以显示，<code>b</code>会报错<code>(intermediate value)(...) is not a function</code>。</p>
 <p>这里有个灵活的地方，如果上面的<code>b</code>函数括号位置修改一下，改为放在内容：</p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre class='language-javascript' lang='javascript'>
 (function(){
   console.log(&#39;a&#39;)
 })()
@@ -57,20 +57,20 @@ void function(){
 (function(){
   console.log(&#39;b&#39;)
 }())
-</code></pre>
+</pre>
 <p>那么<code>a,b</code>都可以显示，但也会报同样的错误，稍后再做分析。</p>
 <p></p>
 <p>不加分号，上面的内容会被JS理解为：</p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre class='language-javascript' lang='javascript'>
 (function(){
   console.log(&#39;a&#39;)
 })()(function(){
   console.log(&#39;b&#39;)
 })()
-</code></pre>
+</pre>
 <p>也就是说，<code>a</code>匿名函数执行后，没有<code>;</code>的隔断，后面的<code>b</code>立即执行函数与<code>a</code>合成了一个函数。执行到输出完<code>a</code>时，没有<code>reutrn</code>，后面的<code>()</code>相当于对<code>undefined</code>进行了执行，所以报错。</p>
 <p>依然不加<code>;</code>，我把上面的内容修改一下就看明白了：</p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre class='language-javascript' lang='javascript'>
 (function(){
   return function(){
     console.log(&#39;a&#39;)
@@ -80,50 +80,50 @@ void function(){
 (function(){
   console.log(&#39;b&#39;)
 }())
-</code></pre>
+</pre>
 <p>这个执行结果是：</p>
-<pre><code>
+<pre>
 b
 a
-</code></pre>
+</pre>
 <p>为什么是这样呢，而不是顺序输出？</p>
 <p>首先来看看哪里做了修改：把<code>a</code>函数增加了一个<code>return</code>，也就是说，在执行完<code>a</code>函数部分时，得到的并不是输出内容，而是返回了一个新的匿名函数：</p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre class='language-javascript' lang='javascript'>
 function(){
     console.log(&#39;a&#39;)
   }
-</code></pre>
+</pre>
 <p>在此基础上，执行完<code>b</code>函数，先得到输出<code>b</code>。</p>
 <p>好了，到了关键的地方，为什么接着输出了<code>a</code>？</p>
 <p>先说结果：</p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre class='language-javascript' lang='javascript'>
 (function(){
   console.log(&#39;b&#39;)
 }())
-</code></pre>
+</pre>
 <p>这部分执行完，对前面新返回的匿名函数进行了执行，于是得到<code>a</code>。</p>
 <p></p>
 <p>来举个例子，为什么能执行：</p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre class='language-javascript' lang='javascript'>
 +function(){
  console.log(&#39;i can be executed&#39;);
 }(&#39;nothing here&#39;)
-</code></pre>
+</pre>
 <p>不仅是<code>()</code>本身可以执行函数，在其中增加内容也是没有任何影响，依然发挥执行函数的作用。</p>
 <p></p>
 <p>回到前面的例子，<code>b</code>函数部分</p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre class='language-javascript' lang='javascript'>
 (function(){
   console.log(&#39;b&#39;)
 }())
-</code></pre>
+</pre>
 <p>相当于在括号内部进行了匿名函数执行，输出<code>b</code>之后，又发挥了<code>()</code>执行函数的功能，使得前半部<code>return</code>得到的匿名函数得以执行，最终输出了<code>a</code>。</p>
 <p></p>
 <p>说了这么多，还是要记得写<code>;</code>才是最重要的，就可以避免出现这种错误。</p>
 <p></p>
 <h2>something cool?</h2>
 <p>为了试验分析，我尝试了好多种写法，发现几种有趣的：</p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre class='language-javascript' lang='javascript'>
 !function(){
   return function(){
     return function(){
@@ -141,16 +141,16 @@ function(){
     }
   }
 }()()()()()()()();
-</code></pre>
+</pre>
 <p></p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre class='language-javascript' lang='javascript'>
 (()=&gt;()=&gt;()=&gt;()=&gt;()=&gt;()=&gt;console.log(&#39;super cool&#39;))()()()()()();
-</code></pre>
+</pre>
 <p></p>
 <h2>小细节</h2>
 <p>1.使用ES6箭头函数执行IIFE时，需要使用<code>()</code>包裹才可以，<code>! + - void new</code>等方法不可以。</p>
 <p>比如：</p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre class='language-javascript' lang='javascript'>
 ()=&gt; console.log(666)()
 //这样没反应
 
@@ -159,10 +159,10 @@ function(){
 
 (()=&gt; console.log(666))();
 //带()才行
-</code></pre>
+</pre>
 <p></p>
 <p>2.前面那个分号的例子中，如果观察仔细，你会发现：</p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre class='language-javascript' lang='javascript'>
 (function(){
   return function(){
     console.log(&#39;a&#39;)
@@ -173,9 +173,9 @@ function(){
   console.log(&#39;b&#39;)
 }())
 //这里值得注意
-</code></pre>
+</pre>
 <p>如果换成：</p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre class='language-javascript' lang='javascript'>
 (function(){
   return function(){
     console.log(&#39;a&#39;)
@@ -183,14 +183,14 @@ function(){
 })()
 
 (&#39;cool&#39;)
-</code></pre>
+</pre>
 <p>没问题，都不会报错。</p>
 <p>但是不换成cool的话，<code>()</code>内部的匿名函数：</p>
-<pre><code class='language-javascript' lang='javascript'>
+<pre class='language-javascript' lang='javascript'>
 function(){
   console.log(&#39;b&#39;)
 }()
-</code></pre>
+</pre>
 <p>是正常执行了，可要是把这个写法原封不动，执行一下可是要报错的，因为没有这样的IIFE的写法。至于为什么，我也不太清楚，未来深入学习的时候会留心观察的。</p>
 <p></p>
 <p>END</p>

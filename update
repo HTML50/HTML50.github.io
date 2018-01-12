@@ -1,0 +1,49 @@
+#!/bin/bash 
+
+if [ "$1" = "" ]; then
+read -p "make sure new blog and img file in the right place and input memo: " memo
+else
+memo=$1
+fi
+
+ 
+newblog=$(ls blog -t -1 | head -n 1);
+newimg=$(ls list-img -t -1 | head -n 1);
+
+title=$(cat blog/$newblog | grep '<body><h1>.*</h1>' | sed 's/<body><h1>//g' | sed 's/<\/h1>//g')
+if [ "$memo" = "" ]; then 
+memo=$title
+fi
+
+echo "
+<!-----------------item----------------->
+
+<div class='divider'></div>
+
+<a href='javascript:makeRequest(\"./blog/"$newblog"\",1)' target='_self'>
+<div class='item'>
+
+<div class='left-box'>
+<div class='item-img'>
+<img src='list-img/"$newimg"'>
+</div>
+</div>
+
+<div class='right-box'>
+<div class='item-title'>
+"$title"
+</div>
+<div class='item-date'>
+"$(date +%Y-%m-%d)"
+</div>
+<div class='item-summary'>
+"$memo"
+</div>
+</div>
+
+</div>
+</a>">> list.html
+
+git add ./
+git commit -m "new blog: "$memo
+git push
